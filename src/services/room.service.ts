@@ -6,6 +6,7 @@ import { RoomGateway } from '../gateways/room.gateway';
 import { SocketEvent } from '../enums/socketEvent.enum';
 import IMember from '../interfaces/member.interface';
 import { ITeamMemberAssignedPayload } from '../interfaces/payloads/teamMemberAssignedPayload.interface';
+import ITeam from '../interfaces/team.interface';
 
 @Injectable()
 export class RoomService {
@@ -58,7 +59,8 @@ export class RoomService {
   public applyConfiguration(code: string, configuration): IRoom {
     const room = this.getRoom(code);
     room.configuration = { ...room.configuration, ...configuration };
-    room.teams = Array(room.configuration.teams).fill([]);
+
+    this.resetTeams(code);
 
     // notify the room members
     this.notifyRoom(
@@ -68,6 +70,23 @@ export class RoomService {
     );
 
     return room;
+  }
+
+  /**
+   * reset the teams of a room
+   * @param code
+   */
+  public resetTeams(code: string) {
+    const room = this.getRoom(code);
+    room.teams = Array(room.configuration.teams)
+      .fill(0)
+      .map(
+        x =>
+          ({
+            name: 'Team',
+            members: [],
+          } as ITeam),
+      );
   }
 
   /**
@@ -110,6 +129,7 @@ export class RoomService {
     // upload the image if provided
     if (member.imageData) {
       member.imagePath = await this.imageService.addImage(member.imageData);
+      delete member.imageData;
     }
 
     // generate a unique id
@@ -195,6 +215,7 @@ export class RoomService {
    */
   public generateTeams(code: string): void {
     const room = this.getRoom(code);
+    this.resetTeams(code);
 
     // stop previously started generations if applicable
     if (this.generationIntervals[room.codes.admin]) {
@@ -233,9 +254,11 @@ export class RoomService {
         [].concat(...team.members.map(member => member.id)),
       ),
     );
+    console.log(assignedMembers);
     const availableMembers = room.members.filter(
       member => !assignedMembers.includes(member.id),
     );
+    console.log(availableMembers);
 
     // stop generating if the limit has been reached
     if (

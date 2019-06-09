@@ -24,7 +24,7 @@ export class RoomController {
   }
 
   @Post(':code/member')
-  @Roles(Role.ADMIN)
+  @Roles()
   addMember(
     @Param('code') code: string,
     @Body() member: IMember,
@@ -69,7 +69,14 @@ export class RoomController {
 
     // remove the admin code if the spectator code was given
     if (room && room.codes.admin !== code) {
-      delete room.codes.admin;
+      return {
+        ...room,
+
+        codes: {
+          admin: null,
+          spectator: room.codes.spectator,
+        },
+      };
     }
 
     return room;

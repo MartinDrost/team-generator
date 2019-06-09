@@ -4,7 +4,7 @@ import { SecurityUtils } from '../utils/security.utils';
 
 @Injectable()
 export class ImageService {
-  private images: { [path: string]: Buffer };
+  private images: { [path: string]: Buffer } = {};
 
   constructor(private readonly securityUtils: SecurityUtils) {}
 
