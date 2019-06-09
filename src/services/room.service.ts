@@ -254,11 +254,10 @@ export class RoomService {
         [].concat(...team.members.map(member => member.id)),
       ),
     );
-    console.log(assignedMembers);
+
     const availableMembers = room.members.filter(
       member => !assignedMembers.includes(member.id),
     );
-    console.log(availableMembers);
 
     // stop generating if the limit has been reached
     if (
