@@ -7,12 +7,12 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
-import { RoomService } from 'services/room.service';
-import IMember from 'interfaces/member.interface';
-import IRoom from 'interfaces/room.interface';
-import { Roles } from 'decorators/roles.decorator';
-import { Role } from 'enums/role.enum';
-import IRoomConfiguration from 'interfaces/roomConfiguration.interface';
+import { RoomService } from '../services/room.service';
+import IRoom from '../interfaces/room.interface';
+import { Role } from '../enums/role.enum';
+import IMember from '../interfaces/member.interface';
+import { Roles } from '../decorators/roles.decorator';
+import IRoomConfiguration from '../interfaces/roomConfiguration.interface';
 
 @Controller('room')
 export class RoomController {

@@ -5,10 +5,10 @@ import {
   WsException,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { SocketEvent } from 'enums/socketEvent.enum';
-import { RoomService } from 'services/room.service';
-import { IJoinRoomPayload } from 'interfaces/payloads/joinRoomPayload.interface';
 import { forwardRef, Inject } from '@nestjs/common';
+import { RoomService } from '../services/room.service';
+import { SocketEvent } from '../enums/socketEvent.enum';
+import { IJoinRoomPayload } from '../interfaces/payloads/joinRoomPayload.interface';
 
 @WebSocketGateway()
 export class RoomGateway {

@@ -1,11 +1,11 @@
 import { Injectable, forwardRef, Inject } from '@nestjs/common';
-import { SecurityUtils } from 'utils/security.utils';
-import IRoom from 'interfaces/room.interface';
-import { RoomGateway } from 'gateways/room.gateway';
-import { SocketEvent } from 'enums/socketEvent.enum';
-import IMember from 'interfaces/member.interface';
 import { ImageService } from './image.service';
-import { ITeamMemberAssignedPayload } from 'interfaces/payloads/teamMemberAssignedPayload.interface';
+import IRoom from '../interfaces/room.interface';
+import { SecurityUtils } from '../utils/security.utils';
+import { RoomGateway } from '../gateways/room.gateway';
+import { SocketEvent } from '../enums/socketEvent.enum';
+import IMember from '../interfaces/member.interface';
+import { ITeamMemberAssignedPayload } from '../interfaces/payloads/teamMemberAssignedPayload.interface';
 
 @Injectable()
 export class RoomService {

@@ -1,4 +1,4 @@
-import IMember from 'interfaces/member.interface';
+import IMember from '../member.interface';
 
 export interface ITeamMemberAssignedPayload {
   teamIndex: number;

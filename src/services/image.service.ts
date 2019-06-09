@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import sharp = require('sharp');
-import { SecurityUtils } from 'utils/security.utils';
+import { SecurityUtils } from '../utils/security.utils';
 
 @Injectable()
 export class ImageService {

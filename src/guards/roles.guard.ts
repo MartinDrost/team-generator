@@ -6,8 +6,8 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { RoomService } from 'services/room.service';
-import { Role } from 'enums/role.enum';
+import { RoomService } from '../services/room.service';
+import { Role } from '../enums/role.enum';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

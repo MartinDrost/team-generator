@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { charSet } from 'constants/charSet.constants';
+import { charSet } from '../constants/charSet.constants';
 
 @Injectable()
 export class SecurityUtils {
