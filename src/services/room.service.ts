@@ -43,10 +43,10 @@ export class RoomService {
       },
     };
 
+    this.rooms.push(room);
+
     // apply the given settings
     room = this.applyConfiguration(room.codes.admin, room.configuration);
-
-    this.rooms.push(room);
 
     return room;
   }
@@ -57,7 +57,7 @@ export class RoomService {
    */
   public applyConfiguration(code: string, configuration): IRoom {
     const room = this.getRoom(code);
-    room.configuration = configuration;
+    room.configuration = { ...room.configuration, ...configuration };
     room.teams = Array(room.configuration.teams).fill([]);
 
     // notify the room members
