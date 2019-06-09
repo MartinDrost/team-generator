@@ -30,6 +30,6 @@ export class RoomGateway {
     client.join(payload.accessCode);
 
     // notify the client that he/she has joined a room
-    client.emit(SocketEvent.ROOM_JOINED.toString(), room);
+    client.emit(SocketEvent.ROOM_JOINED.toString(), null);
   }
 }
