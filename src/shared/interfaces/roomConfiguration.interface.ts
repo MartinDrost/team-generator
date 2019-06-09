@@ -1,4 +1,4 @@
-export default interface IRoomConfiguration {
+export interface IRoomConfiguration {
   suspenseMs: number;
   teams: number;
   teamMembers: number;

@@ -8,11 +8,11 @@ import {
   Delete,
 } from '@nestjs/common';
 import { RoomService } from '../services/room.service';
-import IRoom from '../interfaces/room.interface';
+import { IRoom } from '../shared/interfaces/room.interface';
 import { Role } from '../enums/role.enum';
-import IMember from '../interfaces/member.interface';
+import { IMember } from '../shared/interfaces/member.interface';
 import { Roles } from '../decorators/roles.decorator';
-import IRoomConfiguration from '../interfaces/roomConfiguration.interface';
+import { IRoomConfiguration } from '../shared/interfaces/roomConfiguration.interface';
 
 @Controller('room')
 export class RoomController {

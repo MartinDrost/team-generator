@@ -1,0 +1,12 @@
+{
+  "name": "team-generator-packages",
+  "version": "1.0.0",
+  "description": "Shared packages for the team-generator API/client",
+  "main": "index.js",
+  "scripts": {
+    "prepublishOnly": "tsc --declaration",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Martin Drost",
+  "license": "ISC"
+}

@@ -7,8 +7,8 @@ import {
 import { Server, Socket } from 'socket.io';
 import { forwardRef, Inject } from '@nestjs/common';
 import { RoomService } from '../services/room.service';
-import { SocketEvent } from '../enums/socketEvent.enum';
-import { IJoinRoomPayload } from '../interfaces/payloads/joinRoomPayload.interface';
+import { SocketEvent } from '../shared/enums/socketEvent.enum';
+import { IJoinRoomPayload } from '../shared/interfaces/joinRoomPayload.interface';
 
 @WebSocketGateway()
 export class RoomGateway {
