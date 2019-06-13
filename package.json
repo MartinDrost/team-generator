@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "install": "npm install -g typescript && cd api && npm install && cd ../client && npm install && cd ../",
-    "start": "npm install && cd client && npm run build && cd ../api && npm run prestart:prod && npm start"
+    "install": "cd api && npm install && cd ../client && npm install && cd ../",
+    "start": "npm install -g typescript && cd client && npm run build && cd ../api && npm run prestart:prod && npm start"
   },
   "repository": {
     "type": "git",
