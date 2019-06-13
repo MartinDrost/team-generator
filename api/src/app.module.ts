@@ -7,10 +7,11 @@ import { RoomGateway } from './gateways/room.gateway';
 import { SecurityUtils } from './utils/security.utils';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './guards/roles.guard';
+import { WebController } from './controllers/web.controller';
 
 @Module({
   imports: [],
-  controllers: [RoomController, MediaController],
+  controllers: [RoomController, MediaController, WebController],
   providers: [
     RoomService,
     ImageService,
