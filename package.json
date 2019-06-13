@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "heroku-postbuild": "cd ./client && npm run build",
-    "install": "npm install && cd ./client && npm install",
+    "postinstall": "cd ./client && npm install",
     "build": "tsc -p tsconfig.build.json && cd ./client && npm run build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/main.js",

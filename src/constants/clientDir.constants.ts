@@ -1,1 +1,1 @@
-export const clientDir = '../../../client/build/';
+export const clientDir = '../../client/build/';
