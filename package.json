@@ -1,0 +1,19 @@
+{
+  "name": "team-generator",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "install": "cd api && npm install && cd ../client && npm install && cd ../",
+    "start": "cd client && npm run build && cd ../api && npm run prestart:prod && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MartinDrost/team-generator.git"
+  },
+  "author": "Martin Drost",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MartinDrost/team-generator/issues"
+  },
+  "homepage": "https://github.com/MartinDrost/team-generator#readme"
+}
