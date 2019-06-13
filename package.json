@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "install": "npm install -g typescript && cd api && npm install && cd ../client && npm install && cd ../",
-    "start": "cd client && npm run build && cd ../api && npm run prestart:prod && npm start"
+    "start": "npm install && cd client && npm run build && cd ../api && npm run prestart:prod && npm start"
   },
   "repository": {
     "type": "git",
