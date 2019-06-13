@@ -5,43 +5,12 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "postinstall": "cd ./client && npm install",
-    "build": "tsc -p tsconfig.build.json && cd ./client && npm run build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "node dist/main.js",
-    "start:dev": "concurrently --handle-input \"wait-on dist/main.js && nodemon\" \"tsc -w -p tsconfig.build.json\" ",
-    "start:debug": "nodemon --config nodemon-debug.json",
-    "prestart:prod": "rimraf dist && npm run build",
-    "start:prod": "node dist/main.js",
-    "lint": "tslint -p tsconfig.json -c tslint.json"
-  },
-  "dependencies": {
-    "@nestjs/common": "^6.0.0",
-    "@nestjs/core": "^6.0.0",
-    "@nestjs/platform-express": "^6.0.0",
-    "@nestjs/platform-socket.io": "^6.3.1",
-    "@nestjs/swagger": "^3.0.2",
-    "@nestjs/websockets": "^6.3.1",
-    "express": "^4.17.1",
-    "node": "^12.4.0",
-    "reflect-metadata": "^0.1.12",
-    "rimraf": "^2.6.2",
-    "rxjs": "^6.3.3",
-    "sharp": "^0.22.1",
-    "swagger-ui-express": "^4.0.6"
-  },
-  "devDependencies": {
-    "@types/express": "^4.16.0",
-    "@types/node": "^10.14.9",
-    "@types/sharp": "^0.22.2",
-    "@types/socket.io": "^2.1.2",
-    "concurrently": "^4.1.0",
-    "nodemon": "^1.18.9",
-    "prettier": "^1.15.3",
-    "ts-node": "8.1.0",
-    "tsconfig-paths": "3.8.0",
-    "tslint": "5.16.0",
-    "typescript": "3.4.3",
-    "wait-on": "^3.2.0"
+    "install": "npm run install:client && npm run install:server",
+    "install:client": "cd ./client && npm install",
+    "install:server": "cd ./server && npm install",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "cd ./client && npm run build",
+    "build:server": "cd ./server && npm run build",
+    "start": "cd ./server && npm start"
   }
 }
