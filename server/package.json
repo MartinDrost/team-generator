@@ -5,7 +5,8 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "postinstall": "cd ./client && npm install",
+    "build": "tsc -p tsconfig.build.json && cd ./client && npm run build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/main.js",
     "start:dev": "concurrently --handle-input \"wait-on dist/main.js && nodemon\" \"tsc -w -p tsconfig.build.json\" ",
