@@ -3,36 +3,36 @@ import './styles.css';
 import Input from '../input';
 
 interface IProps {
+  disabled: boolean;
   length: number;
   onComplete: (sequence: string[]) => any;
 }
 
 export default class InputSequence extends React.Component<IProps> {
-  private inputs: JSX.Element[] = [];
   private value: string[] = [];
   private containerRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   componentDidMount() {
-    this.createInputs();
+    this.value = Array(this.props.length).fill('');
   }
 
   render() {
     return (
       <div className="input-sequence-component" ref={this.containerRef}>
-        {this.inputs}
+        {this.getInputs()}
       </div>
     );
   }
 
   /**
-   * Creates the inputs required for the sequence
+   * Build and return the inputs
    */
-  private createInputs() {
-    this.value = Array(this.props.length).fill('');
-    this.inputs = Array(this.props.length)
+  private getInputs(): JSX.Element[] {
+    return Array(this.props.length)
       .fill(null)
       .map((x, i) => (
         <Input
+          disabled={this.props.disabled}
           key={i}
           onKeyUpCapture={e =>
             this.setValue(i, e.currentTarget.value, e.keyCode)
@@ -41,8 +41,6 @@ export default class InputSequence extends React.Component<IProps> {
           maxLength={1}
         />
       ));
-
-    this.forceUpdate();
   }
 
   /**

@@ -9,17 +9,51 @@ interface IProps {
   onCreateRoom: () => any;
 }
 
-interface IState {}
+interface IState {
+  disabled: boolean;
+}
 
 export default class AccessForm extends React.Component<IProps, IState> {
+  public state: IState = {
+    disabled: false,
+  };
+
   render() {
     return (
       <form className="access-form-component">
         <label>Enter room code</label>
-        <InputSequence length={5} onComplete={values => console.log} />
+        <InputSequence
+          disabled={this.state.disabled}
+          length={5}
+          onComplete={values => this.enterRoomCode(values)}
+        />
         <Separator>or</Separator>
-        <Button onClick={() => this.props.onCreateRoom()}>Create room</Button>
+        <Button
+          disabled={this.state.disabled}
+          onClick={() => this.createRoom()}
+        >
+          Create room
+        </Button>
       </form>
     );
+  }
+
+  /**
+   * Attempt to join a room by its code
+   * @param code
+   */
+  private async enterRoomCode(code: string[]): Promise<void> {
+    this.setState({ disabled: true });
+    await this.props.onCodeSubmit(code.join(''));
+    // this.setState({ disabled: false });
+  }
+
+  /**
+   * Create a new room
+   */
+  private async createRoom(): Promise<void> {
+    this.setState({ disabled: true });
+    await this.props.onCreateRoom();
+    // this.setState({ disabled: false });
   }
 }

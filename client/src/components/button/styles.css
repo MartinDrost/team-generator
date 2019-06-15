@@ -9,6 +9,8 @@
   color: #fff;
   width: 100%;
   position: relative;
+  transition: 0.3s opacity;
+  opacity: 1;
 }
 .button-component::before {
   content: ' ';
@@ -30,4 +32,12 @@
 .button-component:active::before {
   background: #000;
   opacity: 0.1;
+}
+
+.button-component:disabled::before {
+  opacity: 0;
+  cursor: default;
+}
+.button-component:disabled {
+  opacity: 0.78;
 }
