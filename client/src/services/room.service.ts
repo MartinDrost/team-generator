@@ -122,35 +122,23 @@ export const roomService = new (class Service {
    * Initializes the socket listeners
    */
   private initSocketListeners(): void {
-    this.socket.on(SocketEvent.ROOM_JOINED.toString(), (data: IRoom) =>
-      this.onRoomJoined.next(data),
-    );
-    this.socket.on(SocketEvent.MEMBER_ADDED.toString(), (data: IMember) =>
-      this.onMemberAdded.next(data),
-    );
-    this.socket.on(SocketEvent.MEMBER_SUGGESTED.toString(), (data: IMember) =>
-      this.onMemberSuggested.next(data),
-    );
-    this.socket.on(SocketEvent.MEMBER_UPDATED.toString(), (data: IMember) =>
-      this.onMemberUpdated.next(data),
-    );
-    this.socket.on(SocketEvent.MEMBER_DELETED.toString(), (data: IMember) =>
-      this.onMemberDeleted.next(data),
-    );
-    this.socket.on(
-      SocketEvent.TEAM_MEMBER_ASSIGNED.toString(),
-      (data: ITeamMemberAssignedPayload) =>
-        this.onTeamMemberAssigned.next(data),
-    );
-    this.socket.on(
-      SocketEvent.ROOM_CONFIGURATION_CHANGED.toString(),
-      (data: IRoomConfiguration) => this.onRoomConfigurationChanged.next(data),
-    );
-    this.socket.on(SocketEvent.TEAM_GENERATION_STARTED.toString(), () =>
-      this.onTeamGenerationStarted.next(),
-    );
-    this.socket.on(SocketEvent.TEAM_GENERATION_COMPLETED.toString(), () =>
-      this.onTeamGenerationCompleted.next(),
-    );
+    const eventListenerPair: { [event: string]: Subject<any> } = {
+      [SocketEvent.ROOM_JOINED]: this.onRoomJoined,
+      [SocketEvent.MEMBER_ADDED]: this.onMemberAdded,
+      [SocketEvent.MEMBER_SUGGESTED]: this.onMemberSuggested,
+      [SocketEvent.MEMBER_UPDATED]: this.onMemberUpdated,
+      [SocketEvent.MEMBER_DELETED]: this.onMemberDeleted,
+      [SocketEvent.TEAM_MEMBER_ASSIGNED]: this.onTeamMemberAssigned,
+      [SocketEvent.ROOM_CONFIGURATION_CHANGED]: this.onRoomConfigurationChanged,
+      [SocketEvent.TEAM_GENERATION_STARTED]: this.onTeamGenerationStarted,
+      [SocketEvent.TEAM_GENERATION_COMPLETED]: this.onTeamGenerationCompleted,
+    };
+
+    /**
+     * Map the listeners to socket events
+     */
+    Object.keys(eventListenerPair).forEach(event => {
+      this.socket.on(event, (data: any) => eventListenerPair[event].next(data));
+    });
   }
 })();
