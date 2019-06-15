@@ -1,4 +1,10 @@
-import { Injectable, forwardRef, Inject } from '@nestjs/common';
+import {
+  Injectable,
+  forwardRef,
+  Inject,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { ImageService } from './image.service';
 import { IRoom } from '../shared/interfaces/room.interface';
 import { SecurityUtils } from '../utils/security.utils';
@@ -32,8 +38,8 @@ export class RoomService {
     // set up a basic room
     let room: IRoom = {
       codes: {
-        admin: this.securityUtils.generateHash(4, existingCodes),
-        spectator: this.securityUtils.generateHash(4, existingCodes),
+        admin: this.securityUtils.generateHash(5, existingCodes),
+        spectator: this.securityUtils.generateHash(5, existingCodes),
       },
       teams: [],
       members: [],
@@ -97,6 +103,13 @@ export class RoomService {
     const room = this.rooms.find(room =>
       Object.values(room.codes).includes(code),
     );
+
+    if (!room) {
+      throw new HttpException(
+        'No room matching that code',
+        HttpStatus.NOT_FOUND,
+      );
+    }
 
     return room;
   }

@@ -43,17 +43,25 @@ export default class AccessForm extends React.Component<IProps, IState> {
    * @param code
    */
   private async enterRoomCode(code: string[]): Promise<void> {
-    this.setState({ disabled: true });
-    await this.props.onCodeSubmit(code.join(''));
-    // this.setState({ disabled: false });
+    try {
+      this.setState({ disabled: true });
+      await this.props.onCodeSubmit(code.join(''));
+    } catch (e) {
+      // todo: create notification
+      this.setState({ disabled: false });
+    }
   }
 
   /**
    * Create a new room
    */
   private async createRoom(): Promise<void> {
-    this.setState({ disabled: true });
-    await this.props.onCreateRoom();
-    // this.setState({ disabled: false });
+    try {
+      this.setState({ disabled: true });
+      await this.props.onCreateRoom();
+    } catch (e) {
+      // todo: create notification
+      this.setState({ disabled: false });
+    }
   }
 }

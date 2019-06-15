@@ -11,7 +11,7 @@ export const charSet = [
   //'i',
   'j',
   'k',
-  'l',
+  // 'l',
   'm',
   'n',
   //'o',
