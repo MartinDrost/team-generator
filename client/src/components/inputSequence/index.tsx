@@ -62,20 +62,20 @@ export default class InputSequence extends React.Component<IProps> {
     // call the onComplete event if all values are set
     if (this.value.every(value => !!value)) {
       this.props.onComplete(this.value);
-    } else {
-      // else move to the next/previous input
-      if (this.containerRef.current) {
-        if ([9, 16, 17, 18, 20].includes(keyCode)) {
-          return; // return if a function key has been pressed (shift, ctrl etc.)
-        }
+    }
 
-        const nodes = this.containerRef.current.getElementsByTagName('input');
-        const targetNode = nodes[index + direction];
-        if (targetNode) {
-          targetNode.select();
-        }
-        nodes[index].value = value;
+    // move to the next/previous input
+    if (this.containerRef.current) {
+      if ([9, 16, 17, 18, 20].includes(keyCode)) {
+        return; // return if a function key has been pressed (shift, ctrl etc.)
       }
+
+      const nodes = this.containerRef.current.getElementsByTagName('input');
+      const targetNode = nodes[index + direction];
+      if (targetNode) {
+        targetNode.select();
+      }
+      nodes[index].value = value;
     }
   }
 }
