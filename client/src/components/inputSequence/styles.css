@@ -1,0 +1,23 @@
+.input-sequence-component {
+  display: flex;
+}
+.input-sequence-component > .input-component {
+  flex: 1;
+  border-left: 1px solid #d0d0d0;
+  text-align: center;
+}
+
+.input-sequence-component
+  > .input-component:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+
+.input-sequence-component > .input-component:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input-sequence-component > .input-component:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}

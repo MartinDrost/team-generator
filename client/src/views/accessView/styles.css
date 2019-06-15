@@ -3,3 +3,8 @@
   align-items: center;
   justify-content: space-around;
 }
+
+.access-view > .access-form-component {
+  flex: 1;
+  max-width: 275px;
+}
