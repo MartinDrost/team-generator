@@ -1,51 +1,62 @@
 export enum SocketEvent {
   /**
    * Attempt to join a room using a code
+   * @param IJoinRoomPayload
+   * @returns void
    */
   JOIN_ROOM,
 
   /**
    * Notify that the socket has joined a room
+   * @returns IRoom
    */
   ROOM_JOINED,
 
   /**
    * Notify that a new member has been added
+   * @returns IMember
    */
   MEMBER_ADDED,
 
   /**
    * Notify admins that a spectator suggested a member
+   * @returns IMember
    */
   MEMBER_SUGGESTED,
 
   /**
    * Notify that a member has been updated
+   * @returns IMember
    */
   MEMBER_UPDATED,
 
   /**
    * Notify that a member has been deleted
+   * @returns IMember
    */
   MEMBER_DELETED,
 
   /**
    * Notify that a member has been assigned to a team
+   * @returns ITeamMemberAssignedPayload
    */
   TEAM_MEMBER_ASSIGNED,
 
   /**
-   * Notify that the team configuration of the server has been changed
+   * Notify that the team configuration of the room has been changed
+   * @returns IROOM
    */
-  TEAM_CONFIGURATION_CHANGED,
+  ROOM_CONFIGURATION_CHANGED,
 
   /**
-   * Notify that the server has started generating the teams
+   * Notify that the room has started generating the teams
+   * @returns void
    */
   TEAM_GENERATION_STARTED,
 
   /**
-   * Notify that the server has completed generating the teams
+   * Notify that the room has completed generating the teams
+   * @returns void
    */
   TEAM_GENERATION_COMPLETED,
 }

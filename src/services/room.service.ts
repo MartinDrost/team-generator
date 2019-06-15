@@ -71,7 +71,7 @@ export class RoomService {
     // notify the room members
     this.notifyRoom(
       room.codes.spectator,
-      SocketEvent.TEAM_CONFIGURATION_CHANGED,
+      SocketEvent.ROOM_CONFIGURATION_CHANGED,
       room,
     );
 

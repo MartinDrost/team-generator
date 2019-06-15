@@ -2,12 +2,43 @@ import {
   IRoom,
   IMember,
   IRoomConfiguration,
+  ITeamMemberAssignedPayload,
+  IJoinRoomPayload,
 } from 'team-generator-packages/interfaces';
 import { IResponse } from '../interfaces/response.interface';
 import { httpService } from './http.service';
+import { environment } from '../constants/environment.constants';
+import { Subject } from 'rxjs';
+import { SocketEvent } from 'team-generator-packages/enums';
+import io from 'socket.io-client';
 
 export const roomService = new (class Service {
   private controller = 'room';
+  private socket: SocketIOClient.Socket = io(environment.api_url);
+
+  public onRoomJoined = new Subject<IRoom>();
+  public onMemberAdded = new Subject<IMember>();
+  public onMemberSuggested = new Subject<IMember>();
+  public onMemberUpdated = new Subject<IMember>();
+  public onMemberDeleted = new Subject<IMember>();
+  public onTeamMemberAssigned = new Subject<ITeamMemberAssignedPayload>();
+  public onRoomConfigurationChanged = new Subject<IRoomConfiguration>();
+  public onTeamGenerationStarted = new Subject<void>();
+  public onTeamGenerationCompleted = new Subject<void>();
+
+  constructor() {
+    this.initSocketListeners();
+  }
+
+  /**
+   * Join the socket channel of a room
+   * @param code
+   */
+  private joinRoomSocket(code: string): void {
+    this.socket.emit(SocketEvent.JOIN_ROOM.toString(), {
+      accessCode: code,
+    } as IJoinRoomPayload);
+  }
 
   /**
    * Creates a new room
@@ -85,5 +116,41 @@ export const roomService = new (class Service {
    */
   getRoom(code: string): Promise<IResponse<IRoom>> {
     return httpService.get([this.controller, code].join('/'));
+  }
+
+  /**
+   * Initializes the socket listeners
+   */
+  private initSocketListeners(): void {
+    this.socket.on(SocketEvent.ROOM_JOINED.toString(), (data: IRoom) =>
+      this.onRoomJoined.next(data),
+    );
+    this.socket.on(SocketEvent.MEMBER_ADDED.toString(), (data: IMember) =>
+      this.onMemberAdded.next(data),
+    );
+    this.socket.on(SocketEvent.MEMBER_SUGGESTED.toString(), (data: IMember) =>
+      this.onMemberSuggested.next(data),
+    );
+    this.socket.on(SocketEvent.MEMBER_UPDATED.toString(), (data: IMember) =>
+      this.onMemberUpdated.next(data),
+    );
+    this.socket.on(SocketEvent.MEMBER_DELETED.toString(), (data: IMember) =>
+      this.onMemberDeleted.next(data),
+    );
+    this.socket.on(
+      SocketEvent.TEAM_MEMBER_ASSIGNED.toString(),
+      (data: ITeamMemberAssignedPayload) =>
+        this.onTeamMemberAssigned.next(data),
+    );
+    this.socket.on(
+      SocketEvent.ROOM_CONFIGURATION_CHANGED.toString(),
+      (data: IRoomConfiguration) => this.onRoomConfigurationChanged.next(data),
+    );
+    this.socket.on(SocketEvent.TEAM_GENERATION_STARTED.toString(), () =>
+      this.onTeamGenerationStarted.next(),
+    );
+    this.socket.on(SocketEvent.TEAM_GENERATION_COMPLETED.toString(), () =>
+      this.onTeamGenerationCompleted.next(),
+    );
   }
 })();

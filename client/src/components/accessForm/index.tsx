@@ -3,6 +3,10 @@ import './styles.css';
 import Separator from '../separator';
 import Button from '../button';
 import InputSequence from '../inputSequence';
+import { json } from '../../utils/statics.utils';
+import { IErrorResponse } from '../../interfaces/errorResponse.interface';
+import { notificationService } from '../../services/notification.service';
+import { Severity } from '../../enums/severity.enum';
 
 interface IProps {
   onCodeSubmit: (code: string) => any;
@@ -46,8 +50,10 @@ export default class AccessForm extends React.Component<IProps, IState> {
     try {
       this.setState({ disabled: true });
       await this.props.onCodeSubmit(code.join(''));
-    } catch (e) {
-      // todo: create notification
+    } catch (err) {
+      const error: IErrorResponse = await json(err);
+      notificationService.add(error.message, Severity.ALERT);
+
       this.setState({ disabled: false });
     }
   }
@@ -59,8 +65,10 @@ export default class AccessForm extends React.Component<IProps, IState> {
     try {
       this.setState({ disabled: true });
       await this.props.onCreateRoom();
-    } catch (e) {
-      // todo: create notification
+    } catch (err) {
+      const error: IErrorResponse = await json(err);
+      notificationService.add(error.message, Severity.ALERT);
+
       this.setState({ disabled: false });
     }
   }
