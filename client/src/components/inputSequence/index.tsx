@@ -51,6 +51,9 @@ export default class InputSequence extends React.Component<IProps> {
    * @param value
    */
   private setValue(index: number, value: string, keyCode: number): void {
+    // make sure the  value consists of max 1 character
+    value = value[0] || '';
+
     const direction =
       this.value[index] && !value ? 0 : !this.value[index] && !value ? -1 : 1;
 
@@ -65,13 +68,13 @@ export default class InputSequence extends React.Component<IProps> {
         if ([9, 16, 17, 18, 20].includes(keyCode)) {
           return; // return if a function key has been pressed (shift, ctrl etc.)
         }
-        const targetNode = this.containerRef.current.getElementsByTagName(
-          'input',
-        )[index + direction];
 
+        const nodes = this.containerRef.current.getElementsByTagName('input');
+        const targetNode = nodes[index + direction];
         if (targetNode) {
           targetNode.select();
         }
+        nodes[index].value = value;
       }
     }
   }
