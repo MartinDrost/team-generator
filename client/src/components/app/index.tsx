@@ -7,11 +7,11 @@ import NotificationCenter from '../notificationCenter';
 const App: React.FC = () => {
   return (
     <>
-      <NotificationCenter />
       <div className="app-component">
         <Router />
         <Footer />
       </div>
+      <NotificationCenter />
     </>
   );
 };
