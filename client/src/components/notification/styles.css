@@ -1,0 +1,30 @@
+.notification-component {
+  padding: 20px;
+  border-radius: 4px;
+  background: #444;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  margin: 20px;
+}
+
+.notification-component > .severity-indicator {
+  width: 13px;
+  height: 13px;
+  border-radius: 100%;
+  background: #eee;
+  margin-right: 10px;
+}
+
+.notification-component > .severity-indicator.severity-0 {
+  background: #2ecc71;
+}
+.notification-component > .severity-indicator.severity-1 {
+  background: #e67e22;
+}
+.notification-component > .severity-indicator.severity-2 {
+  background: #ff4d4d;
+}
+.notification-component > .severity-indicator.severity-3 {
+  background: #3498db;
+}

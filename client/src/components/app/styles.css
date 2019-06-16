@@ -1,0 +1,13 @@
+.app-component {
+  display: flex;
+  /* justify-content: space-between; */
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-component > * {
+  flex: 1;
+}
+.app-component > .footer-component {
+  flex: 0;
+}

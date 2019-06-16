@@ -14,7 +14,7 @@ import { IMember } from '../shared/interfaces/member.interface';
 import { Roles } from '../decorators/roles.decorator';
 import { IRoomConfiguration } from '../shared/interfaces/roomConfiguration.interface';
 
-@Controller('room')
+@Controller('api/room')
 export class RoomController {
   constructor(private readonly roomService: RoomService) {}
 

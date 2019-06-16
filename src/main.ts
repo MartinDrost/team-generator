@@ -1,6 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { clientDir } from './constants/clientDir.constants';
+import path from 'path';
+import express from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,9 +15,10 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api-docs', app, document);
 
   app.enableCors();
+  app.use(express.static(path.join(__dirname, clientDir + '/index.html')));
   await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
