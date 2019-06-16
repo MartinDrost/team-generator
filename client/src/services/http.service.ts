@@ -1,5 +1,6 @@
 import { environment } from '../constants/environment.constants';
 import { IResponse } from '../interfaces/response.interface';
+import { sleep } from '../utils/statics.utils';
 
 export const httpService = new (class Service {
   /**
@@ -31,6 +32,9 @@ export const httpService = new (class Service {
       [environment.api_url, query].join('/'),
       headers,
     );
+
+    // add a timeout to give it more of an "app feel"
+    await sleep(500);
 
     // fetch doesn't error on all required codes by default
     if (response.status >= 400) {

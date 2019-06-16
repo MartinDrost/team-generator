@@ -3,6 +3,8 @@ import { Subject } from 'rxjs';
 import { INotification } from '../interfaces/notification.interface';
 
 export const notificationService = new (class Service {
+  private idCounter = 0;
+
   /**
    * Listener for new notifications
    */
@@ -15,6 +17,7 @@ export const notificationService = new (class Service {
    */
   public add(message: string, severity: Severity): void {
     this.onNotification.next({
+      id: ++this.idCounter,
       message,
       severity,
     });
