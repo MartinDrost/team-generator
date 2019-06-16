@@ -6,6 +6,7 @@
   display: flex;
   align-items: center;
   margin: 20px;
+  min-height: 60px;
 }
 
 .notification-component > .severity-indicator {
