@@ -4,7 +4,7 @@ import { INotification } from '../../interfaces/notification.interface';
 import { Subscription } from 'rxjs';
 import Notification from '../notification';
 import { notificationService } from '../../services/notification.service';
-import { Spring } from 'react-spring/renderprops';
+import { Transition } from 'react-spring/renderprops';
 
 interface IProps {}
 
@@ -39,19 +39,19 @@ export default class NotificationCenter extends React.Component<
   render() {
     return (
       <div className="notification-center-component">
-        {this.state.notifications.map(notification => (
-          <Spring
-            key={notification.id}
-            from={{ opacity: 0, marginTop: '-80px' }}
-            to={{ opacity: 1, marginTop: '0' }}
-          >
-            {props => (
-              <div style={props}>
-                <Notification notification={notification} />
-              </div>
-            )}
-          </Spring>
-        ))}
+        <Transition
+          items={this.state.notifications}
+          keys={item => item.id}
+          from={{ opacity: 0, marginTop: '-80px' }}
+          enter={{ opacity: 1, marginTop: '0' }}
+          leave={{ opacity: 0 }}
+        >
+          {item => props => (
+            <div style={props}>
+              <Notification notification={item} />
+            </div>
+          )}
+        </Transition>
       </div>
     );
   }
