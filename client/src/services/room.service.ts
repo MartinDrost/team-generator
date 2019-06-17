@@ -34,7 +34,7 @@ export const roomService = new (class Service {
    * Join the socket channel of a room
    * @param code
    */
-  private joinRoomSocket(code: string): void {
+  joinRoomSocket(code: string): void {
     this.socket.emit(SocketEvent.JOIN_ROOM.toString(), {
       accessCode: code,
     } as IJoinRoomPayload);

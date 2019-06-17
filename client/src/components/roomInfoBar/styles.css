@@ -1,0 +1,10 @@
+.room-info-bar-component {
+  display: flex;
+  align-items: center;
+  padding: 40px 80px;
+  justify-content: flex-end;
+}
+
+.room-info-bar-component .exit-button {
+  margin-left: 6px;
+}

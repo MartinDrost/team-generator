@@ -51,7 +51,7 @@ export default class AccessForm extends React.Component<IProps, IState> {
       this.setState({ disabled: true });
       await this.props.onCodeSubmit(code.join(''));
     } catch (err) {
-      const error: IErrorResponse = await json(err);
+      const error = await json<IErrorResponse>(err);
       notificationService.add(error.message, Severity.ALERT);
 
       this.setState({ disabled: false });
@@ -66,7 +66,7 @@ export default class AccessForm extends React.Component<IProps, IState> {
       this.setState({ disabled: true });
       await this.props.onCreateRoom();
     } catch (err) {
-      const error: IErrorResponse = await json(err);
+      const error = await json<IErrorResponse>(err);
       notificationService.add(error.message, Severity.ALERT);
 
       this.setState({ disabled: false });

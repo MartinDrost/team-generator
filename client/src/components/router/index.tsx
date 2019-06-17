@@ -9,7 +9,7 @@ export default class Router extends React.Component {
     return (
       <BrowserRouter>
         <Route path="/" exact component={AccessView} />
-        <Route path="/room/:id" exact component={RoomView} />
+        <Route path="/room/:accessCode" exact component={RoomView} />
       </BrowserRouter>
     );
   }

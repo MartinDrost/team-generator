@@ -1,5 +1,6 @@
 .room-view {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+}
+.room-view .team-table-component {
+  position: relative;
+  margin: 0 auto;
 }

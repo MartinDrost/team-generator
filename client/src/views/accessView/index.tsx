@@ -1,12 +1,12 @@
 import React from 'react';
 import './styles.css';
 import AccessForm from '../../components/accessForm';
-import { RouterProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { roomService } from '../../services/room.service';
 import { IRoom } from 'team-generator-packages/interfaces';
 import { json } from '../../utils/statics.utils';
 
-export default class AccessView extends React.Component<RouterProps> {
+export default class AccessView extends React.Component<RouteComponentProps> {
   render() {
     return (
       <div className="access-view">

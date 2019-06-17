@@ -1,0 +1,11 @@
+.team-table-component {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  max-width: 1024px;
+}
+.team-table-component .team-separator {
+  width: 100%;
+  text-align: center;
+  margin: 30px 0;
+}
