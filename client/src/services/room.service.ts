@@ -11,6 +11,7 @@ import { environment } from '../constants/environment.constants';
 import { Subject } from 'rxjs';
 import { SocketEvent } from 'team-generator-packages/enums';
 import io from 'socket.io-client';
+import { IHttpOptions } from '../interfaces/httpOptions.interface';
 
 export const roomService = new (class Service {
   private controller = 'room';
@@ -43,8 +44,8 @@ export const roomService = new (class Service {
   /**
    * Creates a new room
    */
-  createRoom(): Promise<IResponse<IRoom>> {
-    return httpService.post(this.controller, null);
+  createRoom(options?: IHttpOptions): Promise<IResponse<IRoom>> {
+    return httpService.post(this.controller, null, options);
   }
 
   /**
@@ -52,8 +53,12 @@ export const roomService = new (class Service {
    * @param code
    * @param member
    */
-  addMember(code: string, member: IMember): Promise<IResponse<IMember>> {
-    return httpService.post([this.controller, code].join('/'), member);
+  addMember(
+    code: string,
+    member: IMember,
+    options?: IHttpOptions,
+  ): Promise<IResponse<IMember>> {
+    return httpService.post([this.controller, code].join('/'), member, options);
   }
 
   /**
@@ -66,10 +71,12 @@ export const roomService = new (class Service {
     code: string,
     memberId: string,
     member: IMember,
+    options?: IHttpOptions,
   ): Promise<IResponse<IMember>> {
     return httpService.put(
       [this.controller, code, 'member', memberId].join('/'),
       member,
+      options,
     );
   }
 
@@ -78,9 +85,14 @@ export const roomService = new (class Service {
    * @param code
    * @param memberId
    */
-  deleteMember(code: string, memberId: string): Promise<IResponse<IMember>> {
+  deleteMember(
+    code: string,
+    memberId: string,
+    options?: IHttpOptions,
+  ): Promise<IResponse<IMember>> {
     return httpService.delete(
       [this.controller, code, 'member', memberId].join('/'),
+      options,
     );
   }
 
@@ -88,10 +100,14 @@ export const roomService = new (class Service {
    * Starts generating the teams for the provided room
    * @param code
    */
-  startGeneration(code: string): Promise<IResponse<void>> {
+  startGeneration(
+    code: string,
+    options?: IHttpOptions,
+  ): Promise<IResponse<void>> {
     return httpService.post(
       [this.controller, code, 'generate'].join('/'),
       null,
+      options,
     );
   }
 
@@ -103,10 +119,12 @@ export const roomService = new (class Service {
   configureRoom(
     code: string,
     configuration: Promise<IResponse<IRoomConfiguration>>,
+    options?: IHttpOptions,
   ): Promise<IResponse<IRoom>> {
     return httpService.put(
       [this.controller, code, 'configuration'].join('/'),
       configuration,
+      options,
     );
   }
 
@@ -114,8 +132,8 @@ export const roomService = new (class Service {
    * Returns the room by the given accesscode
    * @param code
    */
-  getRoom(code: string): Promise<IResponse<IRoom>> {
-    return httpService.get([this.controller, code].join('/'));
+  getRoom(code: string, options?: IHttpOptions): Promise<IResponse<IRoom>> {
+    return httpService.get([this.controller, code].join('/'), options);
   }
 
   /**

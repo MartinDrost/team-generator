@@ -23,7 +23,7 @@ export default class AccessView extends React.Component<RouteComponentProps> {
    * @param code
    */
   private async enterRoomCode(code: string): Promise<void> {
-    await roomService.getRoom(code);
+    await roomService.getRoom(code, { useTimeout: true });
     this.props.history.push(`/room/${code}`);
   }
 
@@ -31,7 +31,9 @@ export default class AccessView extends React.Component<RouteComponentProps> {
    * Create a new room
    */
   private async createRoom(): Promise<void> {
-    const room = await json<IRoom>(roomService.createRoom());
+    const room = await json<IRoom>(
+      roomService.createRoom({ useTimeout: true }),
+    );
     this.props.history.push(`/room/${room.codes.admin}`);
   }
 }

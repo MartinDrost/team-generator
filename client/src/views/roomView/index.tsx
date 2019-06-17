@@ -9,6 +9,7 @@ import { Severity } from '../../enums/severity.enum';
 import { IErrorResponse } from '../../interfaces/errorResponse.interface';
 import RoomInfoBar from '../../components/roomInfoBar';
 import TeamTable from '../../components/teamTable';
+import { Spring } from 'react-spring/renderprops';
 
 interface IParams {
   accessCode: string;
@@ -42,11 +43,24 @@ export default class RoomView extends React.Component<
     if (!this.state.room) {
       return <div className="room-view"></div>;
     }
+
     return (
-      <div className="room-view">
-        <RoomInfoBar room={this.state.room} />
-        <TeamTable room={this.state.room} generating={this.state.generating} />
-      </div>
+      <Spring
+        from={{ opacity: 0, transform: 'translateY(-20px)' }}
+        to={{ opacity: 1, transform: 'translateY(0px)' }}
+      >
+        {props =>
+          this.state.room && (
+            <div className="room-view" style={props}>
+              <RoomInfoBar room={this.state.room} />
+              <TeamTable
+                room={this.state.room}
+                generating={this.state.generating}
+              />
+            </div>
+          )
+        }
+      </Spring>
     );
   }
 
