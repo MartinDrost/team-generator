@@ -8,7 +8,7 @@ export const notificationService = new (class Service {
   /**
    * Listener for new notifications
    */
-  public onNotification: Subject<INotification> = new Subject();
+  public onNotification = new Subject<INotification>();
 
   /**
    * Distributes a notification through all subscribers
