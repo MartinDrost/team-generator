@@ -33,6 +33,7 @@
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "react-singletons": "^1.4.1",
     "react-spring": "^8.0.25",
     "rxjs": "^6.5.2",
     "socket.io-client": "^2.2.0",

@@ -1,2 +1,6 @@
 .popover-component {
+  background: #444;
+  position: absolute;
+  padding: 20px;
+  border-radius: 4px;
 }

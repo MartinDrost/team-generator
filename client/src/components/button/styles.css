@@ -11,6 +11,7 @@
   position: relative;
   transition: 0.3s opacity;
   opacity: 1;
+  -webkit-tap-highlight-color: transparent;
 }
 .button-component::before {
   content: ' ';

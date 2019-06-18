@@ -3,6 +3,8 @@ import './styles.css';
 import { IMember } from 'team-generator-packages/interfaces';
 import MemberPill from '../memberPill';
 import Button from '../button';
+import { Popover } from '../popover';
+import MemberForm from '../memberForm';
 
 interface IProps {
   members: IMember[];
@@ -21,7 +23,17 @@ export default class MemberPool extends React.Component<IProps> {
             onUpdate={member => this.props.onUpdate(member)}
           />
         ))}
-        <Button shape="pill">Member +</Button>
+        <Button
+          shape="pill"
+          onClick={event =>
+            Popover.mount({
+              children: <MemberForm />,
+              refElement: event.currentTarget,
+            })
+          }
+        >
+          Member +
+        </Button>
       </div>
     );
   }
