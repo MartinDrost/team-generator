@@ -1,6 +1,8 @@
 .room-view {
 }
-.room-view .team-table-component {
+
+.room-view .team-section {
+  max-width: 1024px;
   position: relative;
   margin: 0 auto;
 }

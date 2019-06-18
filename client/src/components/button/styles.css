@@ -41,3 +41,12 @@
 .button-component:disabled {
   opacity: 0.78;
 }
+
+.button-pill {
+  border-radius: 30px;
+  padding: 10px 20px;
+  width: initial;
+}
+.button-pill.button-component::before {
+  border-radius: 30px;
+}

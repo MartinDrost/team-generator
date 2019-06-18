@@ -2,7 +2,7 @@ import React from 'react';
 import './styles.css';
 import { RouteComponentProps } from 'react-router';
 import { roomService } from '../../services/room.service';
-import { IRoom } from 'team-generator-packages/interfaces';
+import { IRoom, IMember } from 'team-generator-packages/interfaces';
 import { json } from '../../utils/statics.utils';
 import { notificationService } from '../../services/notification.service';
 import { Severity } from '../../enums/severity.enum';
@@ -10,6 +10,7 @@ import { IErrorResponse } from '../../interfaces/errorResponse.interface';
 import RoomInfoBar from '../../components/roomInfoBar';
 import TeamTable from '../../components/teamTable';
 import { Spring } from 'react-spring/renderprops';
+import MemberPool from '../../components/memberPool';
 
 interface IParams {
   accessCode: string;
@@ -53,10 +54,18 @@ export default class RoomView extends React.Component<
           this.state.room && (
             <div className="room-view" style={props}>
               <RoomInfoBar room={this.state.room} />
-              <TeamTable
-                room={this.state.room}
-                generating={this.state.generating}
-              />
+
+              <div className="team-section">
+                <TeamTable
+                  room={this.state.room}
+                  generating={this.state.generating}
+                />
+                <MemberPool
+                  members={this.state.room.members}
+                  onCreate={member => this.addMember(member)}
+                  onUpdate={member => this.updateMember(member)}
+                />
+              </div>
             </div>
           )
         }
@@ -91,4 +100,8 @@ export default class RoomView extends React.Component<
    * Unbinds the socket listeners for this view
    */
   private unbindListeners() {}
+
+  private async addMember(member: IMember) {}
+
+  private async updateMember(member: IMember) {}
 }

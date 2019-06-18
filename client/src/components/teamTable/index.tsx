@@ -22,7 +22,7 @@ export default class TeamTable extends React.Component<IProps> {
       for (let j = 0; j < this.props.room.configuration.teamMembers; j++) {
         let member: IMember | null = null;
         if (this.props.room.teams[i]) {
-          member = this.props.room.teams[i].members[j];
+          member = this.props.room.teams[i][j];
         }
 
         elements.push(

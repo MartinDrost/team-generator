@@ -12,7 +12,6 @@ import { RoomGateway } from '../gateways/room.gateway';
 import { SocketEvent } from '../shared/enums/socketEvent.enum';
 import { IMember } from '../shared/interfaces/member.interface';
 import { ITeamMemberAssignedPayload } from '../shared/interfaces/teamMemberAssignedPayload.interface';
-import { ITeam } from '../shared/interfaces/team.interface';
 
 @Injectable()
 export class RoomService {
@@ -85,14 +84,8 @@ export class RoomService {
   public resetTeams(code: string) {
     const room = this.getRoom(code);
     room.teams = Array(room.configuration.teams)
-      .fill(0)
-      .map(
-        x =>
-          ({
-            name: 'Team',
-            members: [],
-          } as ITeam),
-      );
+      .fill(null)
+      .map(x => []);
   }
 
   /**
@@ -263,9 +256,7 @@ export class RoomService {
 
     // get the already assigned member ids
     const assignedMembers: string[] = [].concat(
-      ...room.teams.map(team =>
-        [].concat(...team.members.map(member => member.id)),
-      ),
+      ...room.teams.map(team => [].concat(...team.map(member => member.id))),
     );
 
     const availableMembers = room.members.filter(
@@ -284,7 +275,7 @@ export class RoomService {
     // get the first team with the least members
     let teamIndex = 0;
     room.teams.forEach((team, i) => {
-      if (room.teams[teamIndex].members.length > team.members.length) {
+      if (room.teams[teamIndex].length > team.length) {
         teamIndex = i;
       }
     });
@@ -292,7 +283,7 @@ export class RoomService {
     // find a possible member and assign it
     const member =
       availableMembers[Math.floor(Math.random() * availableMembers.length)];
-    room.teams[teamIndex].members.push(member);
+    room.teams[teamIndex].push(member);
 
     this.notifyRoom(code, SocketEvent.TEAM_MEMBER_ASSIGNED, {
       teamIndex,

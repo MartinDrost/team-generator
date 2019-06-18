@@ -1,4 +1,3 @@
-import { ITeam } from './team.interface';
 import { IMember } from './member.interface';
 import { IRoomConfiguration } from './roomConfiguration.interface';
 
@@ -7,7 +6,7 @@ export interface IRoom {
     admin: string;
     spectator: string;
   };
-  teams: ITeam[];
+  teams: IMember[][];
   members: IMember[];
   configuration: IRoomConfiguration;
 }
