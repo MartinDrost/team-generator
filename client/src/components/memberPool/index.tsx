@@ -27,7 +27,12 @@ export default class MemberPool extends React.Component<IProps> {
           shape="pill"
           onClick={event =>
             Popover.mount({
-              children: <MemberForm />,
+              children: (
+                <div style={{ maxWidth: '230px' }}>
+                  <MemberForm />
+                </div>
+              ),
+              title: 'Add member',
               refElement: event.currentTarget,
             })
           }

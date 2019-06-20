@@ -1,2 +1,6 @@
 .member-form-component {
 }
+
+.member-form-component .button-component {
+  margin-top: 25px;
+}

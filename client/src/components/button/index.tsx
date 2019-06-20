@@ -2,7 +2,7 @@ import React, { ButtonHTMLAttributes } from 'react';
 import './styles.css';
 
 interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  shape?: 'default' | 'pill';
+  shape?: 'default' | 'pill' | 'large';
 }
 
 export default class Button extends React.Component<IProps> {

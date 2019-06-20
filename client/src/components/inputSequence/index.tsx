@@ -32,6 +32,7 @@ export default class InputSequence extends React.Component<IProps> {
       .fill(null)
       .map((x, i) => (
         <Input
+          shape="large"
           disabled={this.props.disabled}
           key={i}
           onKeyUpCapture={e =>

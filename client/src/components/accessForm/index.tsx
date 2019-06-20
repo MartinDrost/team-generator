@@ -35,6 +35,7 @@ export default class AccessForm extends React.Component<IProps, IState> {
         <Button
           disabled={this.state.disabled}
           onClick={() => this.createRoom()}
+          shape="large"
         >
           Create room
         </Button>

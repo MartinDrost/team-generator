@@ -1,10 +1,9 @@
 .input-component {
   border-radius: 4px;
   background: #fff;
-  padding: 20px;
+  padding: 12px 15px;
   display: block;
   width: 100%;
-  margin-top: 20px;
   opacity: 1;
   transition: 0.3s opacity;
 
@@ -14,4 +13,8 @@
 
 .input-component:disabled {
   opacity: 0.54;
+}
+
+.input-large {
+  padding: 20px;
 }

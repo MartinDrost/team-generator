@@ -5,6 +5,7 @@ import { Singleton } from 'react-singletons';
 interface IProps {
   refElement: HTMLElement;
   children: React.ReactNode;
+  title?: React.ReactNode | string;
 }
 
 interface IState {
@@ -35,6 +36,7 @@ export const Popover = new Singleton<IProps>(
             bottom: this.state.bottom + 'px',
           }}
         >
+          {this.props.title && <div className="title">{this.props.title}</div>}
           {this.props.children}
         </div>
       );
@@ -45,10 +47,8 @@ export const Popover = new Singleton<IProps>(
      */
     private calcPosition() {
       let popoverWidth = 0;
-      let popoverHeight = 0;
       if (this.ref.current) {
         popoverWidth = this.ref.current.offsetWidth;
-        popoverHeight = this.ref.current.offsetHeight;
       }
 
       const boundingRect = this.props.refElement.getBoundingClientRect();
