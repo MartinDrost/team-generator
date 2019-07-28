@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { charSet } from '../constants/charSet.constants';
+import charSet from '../constants/charSet.constants';
 
 @Injectable()
 export class SecurityUtils {
@@ -22,12 +22,12 @@ export class SecurityUtils {
     }
 
     // default to charset if no hashset was given
-    hashSet = hashSet || charSet;
+    hashSet = hashSet || charSet.allCaseSafe;
 
     // generate the hash
     const hash: string = Array(length)
       .fill(0)
-      .map(x => hashSet[Math.floor(Math.random() * charSet.length)])
+      .map(x => hashSet[Math.floor(Math.random() * hashSet.length)])
       .join('');
 
     // generate a new hash if the current one is blacklisted

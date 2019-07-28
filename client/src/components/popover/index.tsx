@@ -25,6 +25,9 @@ export const Popover = new Singleton<IProps>(
     componentDidMount() {
       this.calcPosition();
     }
+    componentWillUnmount() {
+      
+    }
 
     render() {
       return (
@@ -50,9 +53,10 @@ export const Popover = new Singleton<IProps>(
       if (this.ref.current) {
         popoverWidth = this.ref.current.offsetWidth;
       }
-
       const boundingRect = this.props.refElement.getBoundingClientRect();
-      const bottom = document.body.clientHeight - boundingRect.top;
+      const test = window as any
+      test.e = this.props.refElement
+      const bottom = document.body.clientHeight - (boundingRect.top + window.scrollY);
       const left =
         boundingRect.left +
         this.props.refElement.offsetWidth / 2 -

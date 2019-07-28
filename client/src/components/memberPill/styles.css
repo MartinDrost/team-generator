@@ -1,2 +1,10 @@
 .member-pill-component {
+  display: flex;
+  padding: 10px 15px;
+  border-radius: 30px;
+  background-color: #3c3c3c;
+  align-items: center;
+}
+.member-pill-component .member-name {
+  margin: 0 10px;
 }

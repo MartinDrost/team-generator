@@ -1,3 +1,4 @@
+import { forwardRef, Inject } from '@nestjs/common';
 import {
   SubscribeMessage,
   WebSocketGateway,
@@ -5,7 +6,6 @@ import {
   WsException,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { forwardRef, Inject } from '@nestjs/common';
 import { RoomService } from '../services/room.service';
 import { SocketEvent } from '../shared/enums/socketEvent.enum';
 import { IJoinRoomPayload } from '../shared/interfaces/joinRoomPayload.interface';

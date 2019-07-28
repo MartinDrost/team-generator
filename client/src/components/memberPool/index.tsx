@@ -1,15 +1,15 @@
 import React from 'react';
-import './styles.css';
 import { IMember } from 'team-generator-packages/interfaces';
-import MemberPill from '../memberPill';
 import Button from '../button';
-import { Popover } from '../popover';
 import MemberForm from '../memberForm';
+import MemberPill from '../memberPill';
+import { Popover } from '../popover';
+import './styles.css';
 
 interface IProps {
   members: IMember[];
-  onCreate: (member: IMember) => any;
-  onUpdate: (member: IMember) => any;
+  onCreate?: (member: FormData) => any;
+  onDelete?: (member: IMember) => any;
 }
 
 export default class MemberPool extends React.Component<IProps> {
@@ -20,25 +20,29 @@ export default class MemberPool extends React.Component<IProps> {
           <MemberPill
             key={member.id}
             member={member}
-            onUpdate={member => this.props.onUpdate(member)}
+            onDelete={this.props.onCreate ? (member => this.props.onDelete!(member)) : undefined}
           />
         ))}
-        <Button
+        {this.props.onCreate && <Button
           shape="pill"
           onClick={event =>
             Popover.mount({
               children: (
                 <div style={{ maxWidth: '230px' }}>
-                  <MemberForm />
+                  <MemberForm
+                    onSubmit={async member => {
+                      await this.props.onCreate!(member);
+                      Popover.unmount();
+                    }}
+                  />
                 </div>
               ),
-              title: 'Add member',
               refElement: event.currentTarget,
             })
           }
         >
           Member +
-        </Button>
+        </Button>}
       </div>
     );
   }

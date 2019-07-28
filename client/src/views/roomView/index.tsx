@@ -1,16 +1,19 @@
 import React from 'react';
-import './styles.css';
 import { RouteComponentProps } from 'react-router';
-import { roomService } from '../../services/room.service';
-import { IRoom, IMember } from 'team-generator-packages/interfaces';
-import { json } from '../../utils/statics.utils';
-import { notificationService } from '../../services/notification.service';
-import { Severity } from '../../enums/severity.enum';
-import { IErrorResponse } from '../../interfaces/errorResponse.interface';
-import RoomInfoBar from '../../components/roomInfoBar';
-import TeamTable from '../../components/teamTable';
 import { Spring } from 'react-spring/renderprops';
+import {
+  IMember,
+  IRoom,
+  IRoomConfiguration,
+} from 'team-generator-packages/interfaces';
 import MemberPool from '../../components/memberPool';
+import RoomConfigurationForm from '../../components/roomConfigurationForm';
+import RoomInfoBar from '../../components/roomInfoBar';
+import Separator from '../../components/separator';
+import TeamTable from '../../components/teamTable';
+import { roomService } from '../../services/room.service';
+import { json } from '../../utils/statics.utils';
+import './styles.css';
 
 interface IParams {
   accessCode: string;
@@ -25,6 +28,7 @@ export default class RoomView extends React.Component<
   RouteComponentProps<IParams>,
   IState
 > {
+  private iteration = 0;
   private accessCode: string = '';
   public state: IState = {
     room: null,
@@ -52,7 +56,7 @@ export default class RoomView extends React.Component<
       >
         {props =>
           this.state.room && (
-            <div className="room-view" style={props}>
+            <div key={this.iteration} className="room-view" style={props}>
               <RoomInfoBar room={this.state.room} />
 
               <div className="team-section">
@@ -60,11 +64,25 @@ export default class RoomView extends React.Component<
                   room={this.state.room}
                   generating={this.state.generating}
                 />
+                {this.state.room.codes.admin ?
                 <MemberPool
                   members={this.state.room.members}
                   onCreate={member => this.addMember(member)}
-                  onUpdate={member => this.updateMember(member)}
-                />
+                  onDelete={member => this.deleteMember(member)}
+                /> : <MemberPool  members={this.state.room.members}/> }
+
+                {this.state.room.codes.admin && (
+                  <>
+                    <Separator />
+
+                    <RoomConfigurationForm
+                      configuration={this.state.room.configuration}
+                      onSubmit={configuration =>
+                        this.generateTeams(configuration)
+                      }
+                    />
+                  </>
+                )}
               </div>
             </div>
           )
@@ -78,15 +96,14 @@ export default class RoomView extends React.Component<
    */
   private async accessRoom() {
     try {
-      const room = await json<IRoom>(roomService.getRoom(this.accessCode));
-      roomService.joinRoomSocket(room.codes.admin || room.codes.spectator);
+      const room = await json<IRoom>(
+        roomService.getRoom(this.accessCode, { showError: true }),
+      );
+      roomService.joinRoomSocket(this.accessCode);
       this.bindListeners();
 
       this.setState({ room });
     } catch (err) {
-      const error = await json<IErrorResponse>(err);
-      notificationService.add(error.message, Severity.ALERT);
-
       this.props.history.push('');
     }
   }
@@ -94,14 +111,55 @@ export default class RoomView extends React.Component<
   /**
    * Binds the socket listeners for this view
    */
-  private bindListeners() {}
+  private bindListeners() {
+    roomService.onMemberAdded.subscribe(() => this.refreshRoom());
+    roomService.onMemberDeleted.subscribe(() => this.refreshRoom());
+    roomService.onRoomConfigurationChanged.subscribe(() => this.refreshRoom());
+    roomService.onTeamMemberAssigned.subscribe(() => this.refreshRoom());
+  }
+
+  private async refreshRoom() {
+    const room = await json<IRoom>(roomService.getRoom(this.accessCode));
+    this.iteration++;
+    this.setState({ room });
+  }
 
   /**
    * Unbinds the socket listeners for this view
    */
   private unbindListeners() {}
 
-  private async addMember(member: IMember) {}
+  private async addMember(member: FormData) {
+    const created = await json<IMember>(
+      roomService.addMember(
+        this.state.room!.codes.admin || this.state.room!.codes.spectator,
+        member as any,
+        { showError: true },
+      ),
+    );
+    const room = this.state.room!;
+    room.members.push(created);
 
-  private async updateMember(member: IMember) {}
+    this.setState({ room });
+  }
+
+  private async deleteMember(member: IMember) {
+    await roomService.deleteMember(this.state.room!.codes.admin, member.id!, {
+      showError: true,
+    });
+    const room = this.state.room!;
+    room.members = room.members.filter(existing => existing.id !== member.id);
+
+    this.setState({ room });
+  }
+
+  private async generateTeams(configuration?: IRoomConfiguration) {
+    const code = this.state.room!.codes.admin;
+    if (configuration) {
+      await roomService.configureRoom(code, configuration, { showError: true });
+    }
+    await roomService.startGeneration(code, {
+      showError: true,
+    });
+  }
 }

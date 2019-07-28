@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import sharp = require('sharp');
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { SecurityUtils } from '../utils/security.utils';
+import sharp = require('sharp');
 
 @Injectable()
 export class ImageService {
@@ -29,7 +29,11 @@ export class ImageService {
    * @param path
    */
   public getImage(path: string): Buffer {
-    return this.images[path];
+    const buffer = this.images[path];
+    if (!buffer) {
+      throw new NotFoundException();
+    }
+    return buffer;
   }
 
   /**

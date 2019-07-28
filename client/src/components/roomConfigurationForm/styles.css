@@ -1,0 +1,10 @@
+.configuration-form-component {
+  display: flex;
+  align-content: flex-start;
+  align-items: flex-end;
+}
+.configuration-form-component > * {
+  flex: 0;
+  min-width: 120px;
+  margin: 0 10px;
+}

@@ -1,3 +1,4 @@
 export interface IHttpOptions {
-  useTimeout: boolean;
+  useTimeout?: boolean;
+  showError?: boolean;
 }

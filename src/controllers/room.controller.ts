@@ -1,17 +1,21 @@
 import {
-  Controller,
-  Post,
-  Get,
   Body,
-  Param,
-  Put,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
-import { RoomService } from '../services/room.service';
-import { IRoom } from '../shared/interfaces/room.interface';
-import { Role } from '../enums/role.enum';
-import { IMember } from '../shared/interfaces/member.interface';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Roles } from '../decorators/roles.decorator';
+import { Role } from '../enums/role.enum';
+import { IMulterFile } from '../interfaces/multerFile.interface';
+import { RoomService } from '../services/room.service';
+import { IMember } from '../shared/interfaces/member.interface';
+import { IRoom } from '../shared/interfaces/room.interface';
 import { IRoomConfiguration } from '../shared/interfaces/roomConfiguration.interface';
 
 @Controller('api/room')
@@ -25,11 +29,17 @@ export class RoomController {
 
   @Post(':code/member')
   @Roles()
+  @UseInterceptors(FileInterceptor('file'))
   addMember(
     @Param('code') code: string,
     @Body() member: IMember,
+    @UploadedFile() file?: IMulterFile,
   ): Promise<IMember> {
-    return this.roomService.addMember(code, member);
+    return this.roomService.addMember(
+      code,
+      member,
+      file ? file.buffer.toString('base64') : null,
+    );
   }
 
   @Put(':code/member/:id')
@@ -54,7 +64,7 @@ export class RoomController {
     this.roomService.generateTeams(code);
   }
 
-  @Post(':code/configuration')
+  @Put(':code/configuration')
   @Roles(Role.ADMIN)
   configureRoom(
     @Param('code') code: string,
@@ -65,6 +75,7 @@ export class RoomController {
 
   @Get(':code')
   getRoom(@Param('code') code: string): IRoom {
+    code = code.toUpperCase(); // consider all codes uppercased
     const room = this.roomService.getRoom(code);
 
     // remove the admin code if the spectator code was given

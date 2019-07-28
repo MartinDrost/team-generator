@@ -1,17 +1,19 @@
 import {
-  Injectable,
   forwardRef,
-  Inject,
   HttpException,
   HttpStatus,
+  Inject,
+  Injectable,
 } from '@nestjs/common';
-import { ImageService } from './image.service';
-import { IRoom } from '../shared/interfaces/room.interface';
-import { SecurityUtils } from '../utils/security.utils';
+import { IRoomConfiguration } from 'src/shared/interfaces';
+import charSet from '../constants/charSet.constants';
 import { RoomGateway } from '../gateways/room.gateway';
 import { SocketEvent } from '../shared/enums/socketEvent.enum';
 import { IMember } from '../shared/interfaces/member.interface';
+import { IRoom } from '../shared/interfaces/room.interface';
 import { ITeamMemberAssignedPayload } from '../shared/interfaces/teamMemberAssignedPayload.interface';
+import { SecurityUtils } from '../utils/security.utils';
+import { ImageService } from './image.service';
 
 @Injectable()
 export class RoomService {
@@ -37,8 +39,16 @@ export class RoomService {
     // set up a basic room
     let room: IRoom = {
       codes: {
-        admin: this.securityUtils.generateHash(5, existingCodes),
-        spectator: this.securityUtils.generateHash(5, existingCodes),
+        admin: this.securityUtils.generateHash(
+          4,
+          existingCodes,
+          charSet.upperCaseSafe,
+        ),
+        spectator: this.securityUtils.generateHash(
+          4,
+          existingCodes,
+          charSet.upperCaseSafe,
+        ),
       },
       teams: [],
       members: [],
@@ -61,7 +71,13 @@ export class RoomService {
    * Apply the room configuration
    * @param room
    */
-  public applyConfiguration(code: string, configuration): IRoom {
+  public applyConfiguration(
+    code: string,
+    configuration: IRoomConfiguration,
+  ): IRoom {
+    configuration.teamMembers = +configuration.teamMembers;
+    configuration.teams = +configuration.teams;
+
     const room = this.getRoom(code);
     room.configuration = { ...room.configuration, ...configuration };
 
@@ -112,7 +128,11 @@ export class RoomService {
    * @param code
    * @param member
    */
-  public async addMember(code: string, member: IMember): Promise<IMember> {
+  public async addMember(
+    code: string,
+    member: IMember,
+    image: string,
+  ): Promise<IMember> {
     const room = this.getRoom(code);
     if (!room) {
       return null;
@@ -133,9 +153,8 @@ export class RoomService {
     };
 
     // upload the image if provided
-    if (member.imageData) {
-      member.imagePath = await this.imageService.addImage(member.imageData);
-      delete member.imageData;
+    if (image) {
+      member.imagePath = await this.imageService.addImage(image);
     }
 
     // generate a unique id

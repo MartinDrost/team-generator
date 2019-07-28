@@ -1,21 +1,23 @@
+import { Subject } from 'rxjs';
+import io from 'socket.io-client';
+import { SocketEvent } from 'team-generator-packages/enums';
 import {
-  IRoom,
+  IJoinRoomPayload,
   IMember,
+  IRoom,
   IRoomConfiguration,
   ITeamMemberAssignedPayload,
-  IJoinRoomPayload,
 } from 'team-generator-packages/interfaces';
+import { environment } from '../constants/environment.constants';
+import { IHttpOptions } from '../interfaces/httpOptions.interface';
 import { IResponse } from '../interfaces/response.interface';
 import { httpService } from './http.service';
-import { environment } from '../constants/environment.constants';
-import { Subject } from 'rxjs';
-import { SocketEvent } from 'team-generator-packages/enums';
-import io from 'socket.io-client';
-import { IHttpOptions } from '../interfaces/httpOptions.interface';
 
 export const roomService = new (class Service {
   private controller = 'room';
-  private socket: SocketIOClient.Socket = io(environment.api_url);
+  private socket: SocketIOClient.Socket = io(
+    environment.api_url.replace('/api', ''),
+  );
 
   public onRoomJoined = new Subject<IRoom>();
   public onMemberAdded = new Subject<IMember>();
@@ -58,7 +60,11 @@ export const roomService = new (class Service {
     member: IMember,
     options?: IHttpOptions,
   ): Promise<IResponse<IMember>> {
-    return httpService.post([this.controller, code].join('/'), member, options);
+    return httpService.post(
+      [this.controller, code, 'member'].join('/'),
+      member,
+      options,
+    );
   }
 
   /**
@@ -118,7 +124,7 @@ export const roomService = new (class Service {
    */
   configureRoom(
     code: string,
-    configuration: Promise<IResponse<IRoomConfiguration>>,
+    configuration: IRoomConfiguration,
     options?: IHttpOptions,
   ): Promise<IResponse<IRoom>> {
     return httpService.put(

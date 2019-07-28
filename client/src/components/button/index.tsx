@@ -12,7 +12,7 @@ export default class Button extends React.Component<IProps> {
         {...{
           type: 'button',
           ...this.props,
-          className: `button-component button-${this.props.shape}`,
+          className: `button-component button-${this.props.shape} ${this.props.className}`,
         }}
       >
         {this.props.children}

@@ -1,5 +1,18 @@
-// commented out easily mistaken characters
-export const charSet = [
+const charSet: { [key: string]: string[] } = {
+  lowerCaseSafe: [],
+  lowerCase: [],
+  upperCaseSafe: [],
+  upperCase: [],
+  digitsSafe: [],
+  digits: [],
+
+  allCaseSafe: [],
+  allCase: [],
+  allSafe: [],
+  all: [],
+};
+
+charSet.lowerCaseSafe = [
   'a',
   'b',
   'c',
@@ -8,13 +21,11 @@ export const charSet = [
   'f',
   'g',
   'h',
-  //'i',
+  'i',
   'j',
   'k',
-  // 'l',
   'm',
   'n',
-  //'o',
   'p',
   'q',
   'r',
@@ -26,6 +37,11 @@ export const charSet = [
   'x',
   'y',
   'z',
+];
+
+charSet.lowerCase = [...charSet.lowerCaseSafe, 'l', 'o'];
+
+charSet.upperCaseSafe = [
   'A',
   'B',
   'C',
@@ -34,13 +50,11 @@ export const charSet = [
   'F',
   'G',
   'H',
-  //'I',
   'J',
   'K',
   'L',
   'M',
   'N',
-  //'O',
   'P',
   'Q',
   'R',
@@ -52,14 +66,18 @@ export const charSet = [
   'X',
   'Y',
   'Z',
-  //'1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  //'0',
 ];
+
+charSet.upperCase = [...charSet.upperCaseSafe, 'I', 'O'];
+charSet.digitsSafe = ['2', '3', '4', '5', '6', '7', '8', '9'];
+charSet.digits = [...charSet.digitsSafe, '1', '0'];
+charSet.allCaseSafe = [...charSet.lowerCaseSafe, ...charSet.upperCaseSafe];
+charSet.allCaseSafe = [...charSet.lowerCase, ...charSet.upperCase];
+charSet.allSafe = [
+  ...charSet.lowerCaseSafe,
+  ...charSet.upperCaseSafe,
+  ...charSet.digitsSafe,
+];
+charSet.all = [...charSet.lowerCase, ...charSet.upperCase, ...charSet.digits];
+
+export default charSet;

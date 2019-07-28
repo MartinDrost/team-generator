@@ -1,31 +1,96 @@
 import React from 'react';
-import './styles.css';
-import Input from '../input';
-import Button from '../button';
 import { IMember } from 'team-generator-packages/interfaces';
+import { formUtils } from '../../utils/form.utils';
+import Button from '../button';
+import Input from '../input';
+import './styles.css';
 
-interface IProps {}
+interface IProps {
+  member?: IMember;
 
-export default class MemberForm extends React.Component<IProps> {
-  private member: IMember = {
-    name: '',
-    skill: 0,
+  onSubmit: (formData: FormData) => any;
+}
+
+interface IState {
+  member: IMember;
+}
+
+export default class MemberForm extends React.Component<IProps, IState> {
+  private formRef = React.createRef<HTMLFormElement>();
+  private file: File | null = null;
+  public state: IState = {
+    member: {
+      name: '',
+      skill: 0,
+    },
   };
+
+  componentDidMount() {
+    const member = {
+      ...this.state.member,
+      ...this.props.member,
+    };
+
+    this.setState({ member });
+  }
 
   render() {
     return (
-      <form className="member-form-component">
+      <form
+        className="member-form-component"
+        ref={this.formRef}
+        onSubmit={e => {
+          e.preventDefault();
+          this.submit();
+        }}
+      >
         <label>Image</label>
-        <input type="file" />
+        <Input
+          type="file"
+          onChange={async e => {
+            this.file = await formUtils.processImage(e);
+          }}
+          style={{ background: 'transparent' }}
+        />
 
         <label>Name</label>
-        <Input defaultValue={this.member.name} placeholder="Name" />
+        <Input
+          defaultValue={this.state.member.name}
+          name="name"
+          placeholder="Name"
+          required
+        />
 
-        <label>Skill</label>
-        <input type="range" defaultValue={this.member.skill.toString()} />
+        {/* <label>Skill</label>
+        <input type="range" defaultValue={this.member.skill.toString()} /> */}
 
-        <Button>Save</Button>
+        <Button type="submit">Save</Button>
       </form>
     );
+  }
+
+  /**
+   * Store the form data in the member attribute
+   */
+  private storeFormData(callback?: () => any) {
+    let member = this.state.member;
+    if (this.formRef.current) {
+      member = formUtils.getFormDataAsJSON<IMember>(this.formRef.current);
+    }
+    this.setState({ member }, callback || (() => {}));
+  }
+
+  /**
+   * submit the form
+   */
+  private submit() {
+    this.storeFormData(() => {
+      const formData = formUtils.jsonToFormData(this.state.member);
+      if (this.file) {
+        formData.append('file', this.file);
+      }
+
+      this.props.onSubmit(formData);
+    });
   }
 }

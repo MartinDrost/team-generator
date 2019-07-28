@@ -1,12 +1,8 @@
 import React from 'react';
-import './styles.css';
-import Separator from '../separator';
 import Button from '../button';
 import InputSequence from '../inputSequence';
-import { json } from '../../utils/statics.utils';
-import { IErrorResponse } from '../../interfaces/errorResponse.interface';
-import { notificationService } from '../../services/notification.service';
-import { Severity } from '../../enums/severity.enum';
+import Separator from '../separator';
+import './styles.css';
 
 interface IProps {
   onCodeSubmit: (code: string) => any;
@@ -28,7 +24,7 @@ export default class AccessForm extends React.Component<IProps, IState> {
         <label>Enter room code</label>
         <InputSequence
           disabled={this.state.disabled}
-          length={5}
+          length={4}
           onComplete={values => this.enterRoomCode(values)}
         />
         <Separator>or</Separator>
@@ -52,9 +48,6 @@ export default class AccessForm extends React.Component<IProps, IState> {
       this.setState({ disabled: true });
       await this.props.onCodeSubmit(code.join(''));
     } catch (err) {
-      const error = await json<IErrorResponse>(err);
-      notificationService.add(error.message, Severity.ALERT);
-
       this.setState({ disabled: false });
     }
   }
@@ -67,9 +60,6 @@ export default class AccessForm extends React.Component<IProps, IState> {
       this.setState({ disabled: true });
       await this.props.onCreateRoom();
     } catch (err) {
-      const error = await json<IErrorResponse>(err);
-      notificationService.add(error.message, Severity.ALERT);
-
       this.setState({ disabled: false });
     }
   }

@@ -24,3 +24,10 @@ export const sleep = (timeMs: number): Promise<void> => {
     setTimeout(() => resolve(), timeMs);
   });
 };
+
+/**
+ * Returns true if one or more arguments are undefined or null
+ * @param values
+ */
+export const isNil = (...values: any[]) =>
+  values.some(value => [null, undefined].includes(value));
