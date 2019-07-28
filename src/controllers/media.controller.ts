@@ -11,6 +11,7 @@ export class MediaController {
     res.writeHead(200, {
       'Content-Type': 'image/jpeg',
       'Content-Length': buffer.byteLength,
+      'Cache-Control': 'max-age=2628000, public',
     });
 
     res.end(buffer);
