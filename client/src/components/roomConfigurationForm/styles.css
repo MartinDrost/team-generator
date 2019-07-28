@@ -1,5 +1,6 @@
 .configuration-form-component {
   display: flex;
+  flex-wrap: wrap;
   align-content: flex-start;
   align-items: flex-end;
 }

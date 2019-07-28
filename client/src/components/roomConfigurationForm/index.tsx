@@ -64,6 +64,14 @@ export default class RoomConfigurationForm extends React.Component<
             name="teamMembers"
           />
         </div>
+        <div>
+          <label>Timeout</label>
+          <Input
+            defaultValue={this.state.configuration.suspenseMs.toString()}
+            type="number"
+            name="suspenseMs"
+          />
+        </div>
 
         <Button type="submit">Generate</Button>
       </form>

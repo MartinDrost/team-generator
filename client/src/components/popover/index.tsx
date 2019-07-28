@@ -1,6 +1,6 @@
 import React from 'react';
-import './styles.css';
 import { Singleton } from 'react-singletons';
+import './styles.css';
 
 interface IProps {
   refElement: HTMLElement;
@@ -25,9 +25,7 @@ export const Popover = new Singleton<IProps>(
     componentDidMount() {
       this.calcPosition();
     }
-    componentWillUnmount() {
-      
-    }
+    componentWillUnmount() {}
 
     render() {
       return (
@@ -54,13 +52,14 @@ export const Popover = new Singleton<IProps>(
         popoverWidth = this.ref.current.offsetWidth;
       }
       const boundingRect = this.props.refElement.getBoundingClientRect();
-      const test = window as any
-      test.e = this.props.refElement
-      const bottom = document.body.clientHeight - (boundingRect.top + window.scrollY);
-      const left =
+      const bottom =
+        document.body.clientHeight - (boundingRect.top + window.scrollY);
+      const left = Math.max(
+        0,
         boundingRect.left +
-        this.props.refElement.offsetWidth / 2 -
-        popoverWidth / 2;
+          this.props.refElement.offsetWidth / 2 -
+          popoverWidth / 2,
+      );
 
       this.setState({ left, bottom });
     }
