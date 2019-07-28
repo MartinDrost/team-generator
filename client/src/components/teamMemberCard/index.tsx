@@ -30,8 +30,11 @@ export default class TeamMemberCard extends React.Component<IProps> {
       return {
         ...base,
 
-        backgroundImage: `url(${this.props.member.imagePath? mediaService.media_endpoint +
-          this.props.member.imagePath : "https://picsum.photos/1000?" + this.props.member.name})`,
+        backgroundImage: `url(${
+          this.props.member.imagePath
+            ? mediaService.media_endpoint + this.props.member.imagePath
+            : 'https://picsum.photos/1000?name=' + this.props.member.name
+        })`,
         backgroundSize: 'cover',
         border: 0,
       };
