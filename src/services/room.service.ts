@@ -75,10 +75,13 @@ export class RoomService {
     code: string,
     configuration: IRoomConfiguration,
   ): IRoom {
-    configuration.teamMembers = +configuration.teamMembers;
-    configuration.teams = +configuration.teams;
-
     const room = this.getRoom(code);
+
+    configuration.teams = +configuration.teams;
+    configuration.teamMembers = room.members.length
+      ? Math.ceil(room.members.length / configuration.teams)
+      : 5;
+
     room.configuration = { ...room.configuration, ...configuration };
 
     this.resetTeams(code);
