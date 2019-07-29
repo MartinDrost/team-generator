@@ -21,6 +21,7 @@ export class RoomGateway {
 
   @SubscribeMessage(SocketEvent.JOIN_ROOM)
   joinRoom(client: Socket, payload: IJoinRoomPayload) {
+    payload.accessCode = payload.accessCode.toUpperCase();
     const room = this.roomService.getRoom(payload.accessCode);
     if (!room) {
       throw new WsException('Incorrect room code');
