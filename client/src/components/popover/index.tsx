@@ -14,18 +14,27 @@ interface IState {
 }
 
 export const Popover = new Singleton<IProps>(
-  class Popover extends React.Component<IProps, IState> {
+  class PopoverComponent extends React.Component<IProps, IState> {
     private ref = React.createRef<HTMLDivElement>();
+    private onClick: any;
 
     public state: IState = {
       left: 0,
       bottom: 0,
     };
 
+    constructor(props: IProps) {
+      super(props);
+      this.onClick = this.hideOnClick.bind(this);
+    }
+
     componentDidMount() {
       this.calcPosition();
+      document.addEventListener('click', this.onClick);
     }
-    componentWillUnmount() {}
+    componentWillUnmount() {
+      document.removeEventListener('click', this.onClick);
+    }
 
     render() {
       return (
@@ -62,6 +71,13 @@ export const Popover = new Singleton<IProps>(
       );
 
       this.setState({ left, bottom });
+    }
+
+    private hideOnClick(e: MouseEvent) {
+      const clickInBounds = this.ref.current!.contains(e.target as any);
+      if (!clickInBounds) {
+        Popover.unmount();
+      }
     }
   },
 );
