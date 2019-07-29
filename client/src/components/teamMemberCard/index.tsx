@@ -29,14 +29,14 @@ export default class TeamMemberCard extends React.Component<IProps> {
     if (this.props.member) {
       return {
         ...base,
+        border: 0,
 
-        backgroundImage: `url(${
+        background: `url(${
           this.props.member.imagePath
             ? mediaService.media_endpoint + this.props.member.imagePath
-            : 'https://picsum.photos/1000?name=' + this.props.member.name
-        })`,
-        backgroundSize: 'cover',
-        border: 0,
+            : 'https://picsum.photos/1000?name=' +
+              (this.props.member.name || '')
+        }) center/cover`,
       };
     }
     return {

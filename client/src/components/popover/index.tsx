@@ -73,6 +73,10 @@ export const Popover = new Singleton<IProps>(
       this.setState({ left, bottom });
     }
 
+    /**
+     * Hide the popover when the user click outside of the bounds
+     * @param e
+     */
     private hideOnClick(e: MouseEvent) {
       const clickInBounds = this.ref.current!.contains(e.target as any);
       if (!clickInBounds) {
