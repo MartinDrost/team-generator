@@ -22,25 +22,21 @@ export default class TeamMemberCard extends React.Component<IProps> {
   }
 
   private getStyle() {
-    const base = {
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-    };
     if (this.props.member) {
       return {
-        ...base,
         border: 0,
 
         background: `url(${
           this.props.member.imagePath
             ? mediaService.media_endpoint + this.props.member.imagePath
             : 'https://picsum.photos/1000?name=' +
-              (this.props.member.name || '')
+              encodeURIComponent(this.props.member.name)
         }) center/cover`,
       };
     }
     return {
-      ...base,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
       backgroundImage: `url(${vaderIcon})`,
       backgroundSize: '40px',
     };
