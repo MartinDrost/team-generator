@@ -1,4 +1,3 @@
-import { Severity } from '../enums/severity.enum';
 import { Subject } from 'rxjs';
 import { INotification } from '../interfaces/notification.interface';
 
@@ -15,11 +14,10 @@ export const notificationService = new (class Service {
    * @param message
    * @param severity
    */
-  public add(message: string, severity: Severity): void {
+  public add(notification: INotification): void {
     this.onNotification.next({
+      ...notification,
       id: ++this.idCounter,
-      message,
-      severity,
     });
   }
 })();

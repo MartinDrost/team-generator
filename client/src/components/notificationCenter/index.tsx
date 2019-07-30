@@ -1,10 +1,10 @@
 import React from 'react';
-import './styles.css';
-import { INotification } from '../../interfaces/notification.interface';
-import { Subscription } from 'rxjs';
-import Notification from '../notification';
-import { notificationService } from '../../services/notification.service';
 import { Transition } from 'react-spring/renderprops';
+import { Subscription } from 'rxjs';
+import { INotification } from '../../interfaces/notification.interface';
+import { notificationService } from '../../services/notification.service';
+import Notification from '../notification';
+import './styles.css';
 
 interface IProps {}
 
@@ -41,14 +41,19 @@ export default class NotificationCenter extends React.Component<
       <div className="notification-center-component">
         <Transition
           items={this.state.notifications}
-          keys={item => item.id}
+          keys={item => item.id || 0}
           from={{ opacity: 0, marginTop: '-80px' }}
           enter={{ opacity: 1, marginTop: '0' }}
           leave={{ opacity: 0 }}
         >
           {item => props => (
             <div style={props}>
-              <Notification notification={item} />
+              <Notification
+                notification={item}
+                onDelete={notification =>
+                  this.removeNotification(notification.id!)
+                }
+              />
             </div>
           )}
         </Transition>
@@ -62,7 +67,10 @@ export default class NotificationCenter extends React.Component<
    */
   private addNotification(notification: INotification): void {
     const notifications = [notification, ...this.state.notifications];
-    setTimeout(() => this.removeNotification(notification.id), 5000);
+    setTimeout(
+      () => this.removeNotification(notification.id!),
+      notification.duration || 5000,
+    );
 
     this.setState({ notifications });
   }

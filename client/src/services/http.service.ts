@@ -53,7 +53,10 @@ export const httpService = new (class Service {
           .clone()
           .json()
           .catch(err => err);
-        notificationService.add((err as any).message, Severity.ALERT);
+        notificationService.add({
+          message: (err as any).message,
+          severity: Severity.ALERT,
+        });
       }
 
       throw response;

@@ -20,29 +20,35 @@ export default class MemberPool extends React.Component<IProps> {
           <MemberPill
             key={member.id}
             member={member}
-            onDelete={this.props.onCreate ? (member => this.props.onDelete!(member)) : undefined}
+            onDelete={
+              this.props.onDelete
+                ? member => this.props.onDelete!(member)
+                : undefined
+            }
           />
         ))}
-        {this.props.onCreate && <Button
-          shape="pill"
-          onClick={event =>
-            Popover.mount({
-              children: (
-                <div style={{ maxWidth: '230px' }}>
-                  <MemberForm
-                    onSubmit={async member => {
-                      await this.props.onCreate!(member);
-                      Popover.unmount();
-                    }}
-                  />
-                </div>
-              ),
-              refElement: event.currentTarget,
-            })
-          }
-        >
-          Member +
-        </Button>}
+        {this.props.onCreate && (
+          <Button
+            shape="pill"
+            onClick={event =>
+              Popover.mount({
+                children: (
+                  <div style={{ maxWidth: '230px' }}>
+                    <MemberForm
+                      onSubmit={async member => {
+                        await this.props.onCreate!(member);
+                        Popover.unmount();
+                      }}
+                    />
+                  </div>
+                ),
+                refElement: event.currentTarget,
+              })
+            }
+          >
+            Member +
+          </Button>
+        )}
       </div>
     );
   }

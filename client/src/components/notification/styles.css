@@ -17,6 +17,18 @@
   margin-right: 10px;
 }
 
+.notification-component > .notification-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  background-size: cover;
+  margin-right: 20px;
+}
+
+.notification-component > .notification-action {
+  margin-left: 20px;
+}
+
 .notification-component > .severity-indicator.severity-0 {
   background: #2ecc71;
 }

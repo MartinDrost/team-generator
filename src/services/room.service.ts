@@ -138,14 +138,6 @@ export class RoomService {
       return null;
     }
 
-    // if the requested code is a spectator code, merely suggest the member to admins
-    if (room.codes.spectator === code) {
-      this.roomGateway.server
-        .to(room.codes.admin)
-        .emit(SocketEvent.MEMBER_SUGGESTED.toString(), member);
-      return member;
-    }
-
     // merge default values
     member = {
       skill: 50,
@@ -155,6 +147,14 @@ export class RoomService {
     // upload the image if provided
     if (image) {
       member.imagePath = await this.imageService.addImage(image);
+    }
+
+    // if the requested code is a spectator code, merely suggest the member to admins
+    if (room.codes.spectator === code) {
+      this.roomGateway.server
+        .to(room.codes.admin)
+        .emit(SocketEvent.MEMBER_SUGGESTED.toString(), member);
+      return member;
     }
 
     // generate a unique id

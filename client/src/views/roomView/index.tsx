@@ -6,11 +6,14 @@ import {
   IRoom,
   IRoomConfiguration,
 } from 'team-generator-packages/interfaces';
+import checkIcon from '../../assets/check-icon.svg';
 import MemberPool from '../../components/memberPool';
 import RoomConfigurationForm from '../../components/roomConfigurationForm';
 import RoomInfoBar from '../../components/roomInfoBar';
 import Separator from '../../components/separator';
 import TeamTable from '../../components/teamTable';
+import { Severity } from '../../enums/severity.enum';
+import { notificationService } from '../../services/notification.service';
 import { roomService } from '../../services/room.service';
 import { json } from '../../utils/statics.utils';
 import './styles.css';
@@ -71,7 +74,10 @@ export default class RoomView extends React.Component<
                     onDelete={member => this.deleteMember(member)}
                   />
                 ) : (
-                  <MemberPool members={this.state.room.members} />
+                  <MemberPool
+                    members={this.state.room.members}
+                    onCreate={member => this.addMember(member)}
+                  />
                 )}
 
                 {this.state.room.codes.admin && (
@@ -119,6 +125,9 @@ export default class RoomView extends React.Component<
     roomService.onMemberDeleted.subscribe(() => this.refreshRoom());
     roomService.onRoomConfigurationChanged.subscribe(() => this.refreshRoom());
     roomService.onTeamMemberAssigned.subscribe(() => this.refreshRoom());
+    roomService.onMemberSuggested.subscribe(member =>
+      this.suggestMember(member),
+    );
   }
 
   private async refreshRoom() {
@@ -132,20 +141,24 @@ export default class RoomView extends React.Component<
    */
   private unbindListeners() {}
 
+  /**
+   * Attempt to add a member
+   * @param member
+   */
   private async addMember(member: FormData) {
-    const created = await json<IMember>(
+    await json<IMember>(
       roomService.addMember(
         this.state.room!.codes.admin || this.state.room!.codes.spectator,
         member as any,
         { showError: true },
       ),
     );
-    const room = this.state.room!;
-    room.members.push(created);
-
-    this.setState({ room });
   }
 
+  /**
+   * Delete a member
+   * @param member
+   */
   private async deleteMember(member: IMember) {
     await roomService.deleteMember(this.state.room!.codes.admin, member.id!, {
       showError: true,
@@ -156,6 +169,10 @@ export default class RoomView extends React.Component<
     this.setState({ room });
   }
 
+  /**
+   * Start generating teams
+   * @param configuration
+   */
   private async generateTeams(configuration?: IRoomConfiguration) {
     const code = this.state.room!.codes.admin;
     if (configuration) {
@@ -165,5 +182,27 @@ export default class RoomView extends React.Component<
       showError: true,
     });
     window.scrollTo(0, 0);
+  }
+
+  private suggestMember(member: IMember) {
+    notificationService.add({
+      message: 'Suggested: ' + member.name,
+      imagePath: member.imagePath,
+      severity: Severity.INFO,
+      duration: 10000,
+      action: (
+        <a>
+          <img
+            style={{ display: 'block' }}
+            onClick={() => {
+              this.addMember(member as any);
+            }}
+            src={checkIcon}
+            height={20}
+            alt={'Accept'}
+          />
+        </a>
+      ),
+    });
   }
 }
