@@ -75,7 +75,6 @@ export class RoomController {
 
   @Get(':code')
   getRoom(@Param('code') code: string): IRoom {
-    code = code.toUpperCase(); // consider all codes uppercased
     const room = this.roomService.getRoom(code);
 
     // remove the admin code if the spectator code was given

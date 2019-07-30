@@ -23,6 +23,7 @@ export default class AccessView extends React.Component<RouteComponentProps> {
    * @param code
    */
   private async enterRoomCode(code: string): Promise<void> {
+    code = code.toUpperCase();
     await roomService.getRoom(code, { useTimeout: true, showError: true });
     this.props.history.push(`/room/${code}`);
   }
