@@ -12,7 +12,7 @@ body {
 
   font-size: 16px;
   color: rgba(255, 255, 255, 0.87);
-  background: url('/images/mountain-bg.jpg');
+  background-image: url('/images/mountain-bg.jpg');
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
