@@ -12,11 +12,23 @@ body {
 
   font-size: 16px;
   color: rgba(255, 255, 255, 0.87);
-  background: url('/images/mountain-bg.jpg') no-repeat center center/cover fixed;
   position: relative;
 }
 
 body::before {
+  z-index: -1;
+  content: ' ';
+  top: 0;
+  left: 0;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/mountain-bg.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+body::after {
   z-index: -1;
   content: ' ';
   top: 0;
