@@ -67,18 +67,15 @@ export default class RoomView extends React.Component<
                   room={this.state.room}
                   generating={this.state.generating}
                 />
-                {this.state.room.codes.admin ? (
-                  <MemberPool
-                    members={this.state.room.members}
-                    onCreate={member => this.addMember(member)}
-                    onDelete={member => this.deleteMember(member)}
-                  />
-                ) : (
-                  <MemberPool
-                    members={this.state.room.members}
-                    onCreate={member => this.addMember(member)}
-                  />
-                )}
+                <MemberPool
+                  members={this.state.room.members}
+                  onCreate={member => this.addMember(member)}
+                  onDelete={
+                    this.state.room.codes.admin
+                      ? member => this.deleteMember(member)
+                      : undefined
+                  }
+                />
 
                 {this.state.room.codes.admin && (
                   <>
