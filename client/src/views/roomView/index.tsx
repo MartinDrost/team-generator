@@ -122,6 +122,12 @@ export default class RoomView extends React.Component<
     roomService.onMemberDeleted.subscribe(() => this.refreshRoom());
     roomService.onRoomConfigurationChanged.subscribe(() => this.refreshRoom());
     roomService.onTeamMemberAssigned.subscribe(() => this.refreshRoom());
+    roomService.onTeamGenerationStarted.subscribe(() =>
+      this.setState({ generating: true }),
+    );
+    roomService.onTeamGenerationCompleted.subscribe(() =>
+      this.setState({ generating: false }),
+    );
     roomService.onMemberSuggested.subscribe(member =>
       this.suggestMember(member),
     );

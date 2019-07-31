@@ -1,7 +1,8 @@
 import React from 'react';
-import './styles.css';
-import { IRoom, IMember } from 'team-generator-packages/interfaces';
+import { IMember, IRoom } from 'team-generator-packages/interfaces';
+import GeneratingCard from '../generatingCard';
 import TeamMemberCard from '../teamMemberCard';
+import './styles.css';
 
 interface IProps {
   room: IRoom;
@@ -18,6 +19,17 @@ export default class TeamTable extends React.Component<IProps> {
    */
   private getTeams(): JSX.Element[] {
     const elements: JSX.Element[] = [];
+    let genCardAssigned = false;
+    const nextTeam =
+      this.props.room.teams.length -
+      this.props.room.teams.filter(
+        (x, i) =>
+          this.props.room.teams[i].length <=
+          (this.props.room.teams[i + 1]
+            ? this.props.room.teams[i + 1].length
+            : Infinity),
+      ).length;
+
     for (let i = 0; i < this.props.room.configuration.teams; i++) {
       for (let j = 0; j < this.props.room.configuration.teamMembers; j++) {
         let member: IMember | null = null;
@@ -25,14 +37,24 @@ export default class TeamTable extends React.Component<IProps> {
           member = this.props.room.teams[i][j];
         }
 
-        elements.push(
-          <TeamMemberCard
-            key={[i, j].join()}
-            member={member}
-            generating={this.props.generating}
-            pool={this.props.room.members}
-          />,
-        );
+        // assign a generating card if applicable
+        if (
+          this.props.generating &&
+          !genCardAssigned &&
+          i === nextTeam &&
+          !member
+        ) {
+          elements.push(
+            <GeneratingCard
+              pool={this.props.room.members}
+              key={[i, j].join()}
+            />,
+          );
+          genCardAssigned = true;
+          continue;
+        }
+
+        elements.push(<TeamMemberCard key={[i, j].join()} member={member} />);
       }
       elements.push(
         <div key={`${i}-sep`} className="team-separator">

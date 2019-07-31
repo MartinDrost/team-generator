@@ -282,15 +282,6 @@ export class RoomService {
       member => !assignedMembers.includes(member.id),
     );
 
-    // stop generating if the limit has been reached
-    if (
-      assignedMembers.length >= room.members.length ||
-      assignedMembers.length >=
-        room.configuration.teamMembers * room.configuration.teams
-    ) {
-      return this.stopTeamGeneration(room.codes.admin);
-    }
-
     // get the first team with the least members
     let teamIndex = 0;
     room.teams.forEach((team, i) => {
@@ -308,5 +299,10 @@ export class RoomService {
       teamIndex,
       member,
     } as ITeamMemberAssignedPayload);
+
+    // stop generating if the limit has been reached
+    if (availableMembers.length === 1) {
+      return this.stopTeamGeneration(room.codes.admin);
+    }
   }
 }

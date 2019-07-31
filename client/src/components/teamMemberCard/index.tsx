@@ -6,8 +6,6 @@ import './styles.css';
 
 interface IProps {
   member: IMember | null;
-  generating: boolean;
-  pool: IMember[];
 }
 
 export default class TeamMemberCard extends React.Component<IProps> {
