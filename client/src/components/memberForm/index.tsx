@@ -47,6 +47,7 @@ export default class MemberForm extends React.Component<IProps, IState> {
         <label>Image</label>
         <Input
           type="file"
+          accept="image/x-png,image/gif,image/jpeg"
           onChange={async e => {
             this.file = await formUtils.processImage(e);
             if (this.file) {

@@ -247,6 +247,10 @@ export class RoomService {
       this.stopTeamGeneration(room.codes.admin);
     }
 
+    if (room.members.length === 0) {
+      return;
+    }
+
     this.notifyRoom(code, SocketEvent.TEAM_GENERATION_STARTED, null);
 
     // assign new team members intervalled by the room suspense
@@ -293,7 +297,9 @@ export class RoomService {
     // find a possible member and assign it
     const member =
       availableMembers[Math.floor(Math.random() * availableMembers.length)];
-    room.teams[teamIndex].push(member);
+    if (member) {
+      room.teams[teamIndex].push(member);
+    }
 
     this.notifyRoom(code, SocketEvent.TEAM_MEMBER_ASSIGNED, {
       teamIndex,
@@ -301,7 +307,7 @@ export class RoomService {
     } as ITeamMemberAssignedPayload);
 
     // stop generating if the limit has been reached
-    if (availableMembers.length === 1) {
+    if (availableMembers.length <= 1) {
       return this.stopTeamGeneration(room.codes.admin);
     }
   }
