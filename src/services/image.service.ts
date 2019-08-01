@@ -14,7 +14,7 @@ export class ImageService {
    */
   public async addImage(base64: string): Promise<string> {
     const image = sharp(Buffer.from(base64, 'base64'))
-      .resize(1024, 1024)
+      .resize(160, 240)
       .jpeg()
       .rotate();
 
