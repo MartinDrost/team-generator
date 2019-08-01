@@ -49,6 +49,11 @@ export default class MemberForm extends React.Component<IProps, IState> {
           type="file"
           onChange={async e => {
             this.file = await formUtils.processImage(e);
+            if (this.file) {
+              const member = this.state.member;
+              member.name = member.name || this.file.name.split('.')[0];
+              this.setState({ member });
+            }
           }}
           style={{ background: 'transparent' }}
         />

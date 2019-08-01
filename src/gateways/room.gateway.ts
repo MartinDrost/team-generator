@@ -32,4 +32,18 @@ export class RoomGateway {
     // notify the client that he/she has joined a room
     client.emit(SocketEvent.ROOM_JOINED.toString(), null);
   }
+
+  @SubscribeMessage(SocketEvent.LEAVE_ROOM)
+  leaveRoom(client: Socket, payload: IJoinRoomPayload) {
+    const room = this.roomService.getRoom(payload.accessCode);
+    if (!room) {
+      throw new WsException('Incorrect room code');
+    }
+
+    // join the room to be eligible for notifications
+    client.leave(payload.accessCode);
+
+    // notify the client that he/she has joined a room
+    client.emit(SocketEvent.ROOM_LEFT.toString(), null);
+  }
 }

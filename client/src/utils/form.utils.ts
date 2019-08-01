@@ -72,8 +72,11 @@ export const formUtils = new (class Utils {
   public async processImage(
     e: ChangeEvent,
     callback?: undefined | ((image: string) => any),
-  ): Promise<File> {
-    const file = (e.currentTarget as HTMLInputElement).files![0] || null;
+  ): Promise<File | null> {
+    const file = ((e.currentTarget as HTMLInputElement).files || [null])[0];
+    if (file === null) {
+      return null;
+    }
     const value = await formUtils.getFileValue(file);
 
     if (callback) {

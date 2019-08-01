@@ -13,6 +13,19 @@ export enum SocketEvent {
   ROOM_JOINED,
 
   /**
+   * Attempt to leave a room using a code
+   * @param IJoinRoomPayload
+   * @returns void
+   */
+  LEAVE_ROOM,
+
+  /**
+   * Notify that the socket has left a room
+   * @returns IRoom
+   */
+  ROOM_LEFT,
+
+  /**
    * Notify that a new member has been added
    * @returns IMember
    */

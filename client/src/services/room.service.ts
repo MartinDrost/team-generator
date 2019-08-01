@@ -20,6 +20,7 @@ export const roomService = new (class Service {
   );
 
   public onRoomJoined = new Subject<IRoom>();
+  public onRoomLeft = new Subject<IRoom>();
   public onMemberAdded = new Subject<IMember>();
   public onMemberSuggested = new Subject<IMember>();
   public onMemberUpdated = new Subject<IMember>();
@@ -39,6 +40,16 @@ export const roomService = new (class Service {
    */
   joinRoomSocket(code: string): void {
     this.socket.emit(SocketEvent.JOIN_ROOM.toString(), {
+      accessCode: code,
+    } as IJoinRoomPayload);
+  }
+
+  /**
+   * Leave the socket channel of a room
+   * @param code
+   */
+  leaveRoomSocket(code: string): void {
+    this.socket.emit(SocketEvent.LEAVE_ROOM.toString(), {
       accessCode: code,
     } as IJoinRoomPayload);
   }
@@ -148,6 +159,7 @@ export const roomService = new (class Service {
   private initSocketListeners(): void {
     const eventListenerPair: { [event: string]: Subject<any> } = {
       [SocketEvent.ROOM_JOINED]: this.onRoomJoined,
+      [SocketEvent.ROOM_LEFT]: this.onRoomLeft,
       [SocketEvent.MEMBER_ADDED]: this.onMemberAdded,
       [SocketEvent.MEMBER_SUGGESTED]: this.onMemberSuggested,
       [SocketEvent.MEMBER_UPDATED]: this.onMemberUpdated,

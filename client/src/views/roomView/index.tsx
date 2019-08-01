@@ -1,6 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Spring } from 'react-spring/renderprops';
+import { Subscription } from 'rxjs';
 import {
   IMember,
   IRoom,
@@ -31,6 +32,7 @@ export default class RoomView extends React.Component<
   RouteComponentProps<IParams>,
   IState
 > {
+  private subscriptions: Subscription[] = [];
   private iteration = 0;
   private accessCode: string = '';
   public state: IState = {
@@ -44,6 +46,7 @@ export default class RoomView extends React.Component<
   }
 
   componentWillUnmount() {
+    roomService.leaveRoomSocket(this.accessCode);
     this.unbindListeners();
   }
 
@@ -118,19 +121,23 @@ export default class RoomView extends React.Component<
    * Binds the socket listeners for this view
    */
   private bindListeners() {
-    roomService.onMemberAdded.subscribe(() => this.refreshRoom());
-    roomService.onMemberDeleted.subscribe(() => this.refreshRoom());
-    roomService.onRoomConfigurationChanged.subscribe(() => this.refreshRoom());
-    roomService.onTeamMemberAssigned.subscribe(() => this.refreshRoom());
-    roomService.onTeamGenerationStarted.subscribe(() =>
-      this.setState({ generating: true }),
-    );
-    roomService.onTeamGenerationCompleted.subscribe(() =>
-      this.setState({ generating: false }),
-    );
-    roomService.onMemberSuggested.subscribe(member =>
-      this.suggestMember(member),
-    );
+    this.subscriptions = [
+      roomService.onMemberAdded.subscribe(() => this.refreshRoom()),
+      roomService.onMemberDeleted.subscribe(() => this.refreshRoom()),
+      roomService.onRoomConfigurationChanged.subscribe(() =>
+        this.refreshRoom(),
+      ),
+      roomService.onTeamMemberAssigned.subscribe(() => this.refreshRoom()),
+      roomService.onTeamGenerationStarted.subscribe(() =>
+        this.setState({ generating: true }),
+      ),
+      roomService.onTeamGenerationCompleted.subscribe(() =>
+        this.setState({ generating: false }),
+      ),
+      roomService.onMemberSuggested.subscribe(member =>
+        this.suggestMember(member),
+      ),
+    ];
   }
 
   private async refreshRoom() {
@@ -142,7 +149,9 @@ export default class RoomView extends React.Component<
   /**
    * Unbinds the socket listeners for this view
    */
-  private unbindListeners() {}
+  private unbindListeners() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 
   /**
    * Attempt to add a member
