@@ -40,7 +40,7 @@
     "nodemon": "^1.18.9",
     "prettier": "^1.15.3",
     "ts-node": "8.1.0",
-    "tsconfig-paths": "3.8.0",
+    "tsconfig-paths": "3.10.1",
     "tslint": "5.16.0",
     "typescript": "3.4.3",
     "wait-on": "^3.2.0"
